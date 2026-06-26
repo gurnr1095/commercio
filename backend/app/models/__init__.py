@@ -1,2 +1,5 @@
-# ORM models live here (Product, Customer, Order, OrderItem).
-# Added in a later phase. Import models here so Alembic autogenerate can see them.
+from app.models.product import Product
+from app.models.customer import Customer
+from app.models.order import Order, OrderItem, OrderStatus
+
+__all__ = ["Product", "Customer", "Order", "OrderItem", "OrderStatus"]
