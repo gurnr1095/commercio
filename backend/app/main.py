@@ -1,9 +1,8 @@
 """Commercio API entrypoint."""
 
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi import FastAPI, Request
+from fastapi.responses import Response
 
-from app.config import settings
 from app.routers import ai, analytics, customers, orders, products
 
 app = FastAPI(
@@ -12,13 +11,22 @@ app = FastAPI(
     version="0.1.0",
 )
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=settings.cors_origins_list,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+_CORS_HEADERS = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "DELETE, GET, OPTIONS, PATCH, POST, PUT",
+    "Access-Control-Allow-Headers": "Authorization, Content-Type",
+    "Access-Control-Max-Age": "600",
+}
+
+
+@app.middleware("http")
+async def cors(request: Request, call_next):
+    if request.method == "OPTIONS":
+        return Response(status_code=200, headers=_CORS_HEADERS)
+    response = await call_next(request)
+    for k, v in _CORS_HEADERS.items():
+        response.headers[k] = v
+    return response
 
 
 @app.get("/health", tags=["health"])
