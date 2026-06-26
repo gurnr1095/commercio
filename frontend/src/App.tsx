@@ -6,6 +6,7 @@ import Products from "@/pages/Products";
 import Orders from "@/pages/Orders";
 import Customers from "@/pages/Customers";
 import Analytics from "@/pages/Analytics";
+import AI from "@/pages/AI";
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
         <Route path="orders" element={<Orders />} />
         <Route path="customers" element={<Customers />} />
         <Route path="analytics" element={<Analytics />} />
+        <Route path="ai" element={<AI />} />
       </Route>
     </Routes>
   );
