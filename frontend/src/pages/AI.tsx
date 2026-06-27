@@ -270,7 +270,7 @@ export default function AI() {
       <div>
         <h1 className="text-2xl font-semibold tracking-tight text-zinc-100">AI Insights</h1>
         <p className="text-sm text-zinc-400 mt-1">
-          On-demand analysis powered by OpenRouter. Results are generated fresh each time.
+          On-demand analysis powered by Mistral AI. Results are generated fresh each time.
         </p>
       </div>
 

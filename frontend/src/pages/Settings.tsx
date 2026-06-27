@@ -139,21 +139,16 @@ function AiSection() {
     <SectionCard
       icon={Bot}
       title="AI / LLM"
-      description="OpenRouter configuration for inventory analysis and sales summaries."
+      description="Mistral AI configuration for inventory analysis and sales summaries."
     >
       <div className="space-y-3 text-sm text-zinc-400">
         <p>
-          AI features use <strong className="text-zinc-200">OpenRouter</strong> with free models. Configure the API key and
-          model fallback list in <code className="text-xs bg-zinc-800 px-1.5 py-0.5 rounded font-mono text-zinc-300">backend/.env</code>:
+          AI features use <strong className="text-zinc-200">Mistral AI</strong>. Configure the API key in{" "}
+          <code className="text-xs bg-zinc-800 px-1.5 py-0.5 rounded font-mono text-zinc-300">backend/.env</code>:
         </p>
         <div className="bg-zinc-800 rounded-lg border border-zinc-700 p-3 font-mono text-xs text-zinc-300 space-y-1">
-          <p>OPENROUTER_API_KEY=sk-or-v1-…</p>
-          <p>OPENROUTER_MODELS=model-1:free,model-2:free</p>
+          <p>MISTRAL_API_KEY=…</p>
         </div>
-        <p className="text-xs text-zinc-500">
-          Models are tried in order — if the first fails or rate-limits, the next is used automatically.
-          Visit <strong className="text-zinc-400">openrouter.ai/models</strong> and filter by "Free" to find available model slugs.
-        </p>
       </div>
     </SectionCard>
   );
