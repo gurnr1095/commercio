@@ -102,7 +102,7 @@ App: http://localhost:5173
 
 | Service | What runs there |
 |---------|----------------|
-| [Render](https://render.com) | FastAPI backend (free tier, Docker) |
+| [Render](https://render.com) | FastAPI backend (free tier) |
 | [Vercel](https://vercel.com) | React frontend (free tier) |
 | [Neon](https://neon.tech) | PostgreSQL database (free tier, no expiry) |
 
