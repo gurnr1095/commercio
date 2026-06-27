@@ -23,30 +23,30 @@ from app.models.product import Product
 
 PRODUCTS = [
     # Electronics
-    {"name": "Wireless Headphones", "sku": "ELEC-001", "price": 79.99, "cost": 32.00, "stock_quantity": 45, "reorder_threshold": 10, "category": "Electronics", "description": "Over-ear noise-cancelling wireless headphones"},
-    {"name": "USB-C Hub 7-in-1", "sku": "ELEC-002", "price": 34.99, "cost": 12.50, "stock_quantity": 8, "reorder_threshold": 15, "category": "Electronics", "description": "7-in-1 USB-C hub with HDMI, USB 3.0, and SD card reader"},
-    {"name": "Mechanical Keyboard", "sku": "ELEC-003", "price": 119.99, "cost": 55.00, "stock_quantity": 22, "reorder_threshold": 8, "category": "Electronics", "description": "TKL mechanical keyboard with blue switches"},
-    {"name": "Webcam 1080p", "sku": "ELEC-004", "price": 54.99, "cost": 21.00, "stock_quantity": 6, "reorder_threshold": 10, "category": "Electronics", "description": "Full HD webcam with built-in mic and autofocus"},
-    {"name": "Portable Charger 20000mAh", "sku": "ELEC-005", "price": 39.99, "cost": 15.00, "stock_quantity": 60, "reorder_threshold": 20, "category": "Electronics", "description": "High-capacity power bank with fast charging"},
+    {"name": "Wireless Headphones", "sku": "ELEC-001", "price": 79.99, "cost": 32.00, "stock_quantity": 45, "reorder_threshold": 10, "category": "Electronics", "description": "Over-ear noise-cancelling wireless headphones", "image_url": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop&q=80"},
+    {"name": "USB-C Hub 7-in-1", "sku": "ELEC-002", "price": 34.99, "cost": 12.50, "stock_quantity": 8, "reorder_threshold": 15, "category": "Electronics", "description": "7-in-1 USB-C hub with HDMI, USB 3.0, and SD card reader", "image_url": "https://images.unsplash.com/photo-1625842268584-8f3296236761?w=400&h=400&fit=crop&q=80"},
+    {"name": "Mechanical Keyboard", "sku": "ELEC-003", "price": 119.99, "cost": 55.00, "stock_quantity": 22, "reorder_threshold": 8, "category": "Electronics", "description": "TKL mechanical keyboard with blue switches", "image_url": "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=400&h=400&fit=crop&q=80"},
+    {"name": "Webcam 1080p", "sku": "ELEC-004", "price": 54.99, "cost": 21.00, "stock_quantity": 6, "reorder_threshold": 10, "category": "Electronics", "description": "Full HD webcam with built-in mic and autofocus", "image_url": "https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=400&h=400&fit=crop&q=80"},
+    {"name": "Portable Charger 20000mAh", "sku": "ELEC-005", "price": 39.99, "cost": 15.00, "stock_quantity": 60, "reorder_threshold": 20, "category": "Electronics", "description": "High-capacity power bank with fast charging", "image_url": "https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=400&h=400&fit=crop&q=80"},
     # Clothing
-    {"name": "Classic Crew Neck Tee", "sku": "CLTH-001", "price": 24.99, "cost": 7.00, "stock_quantity": 120, "reorder_threshold": 30, "category": "Clothing", "description": "100% cotton crew neck t-shirt, unisex fit"},
-    {"name": "Slim Fit Chinos", "sku": "CLTH-002", "price": 59.99, "cost": 22.00, "stock_quantity": 4, "reorder_threshold": 15, "category": "Clothing", "description": "Slim-fit chino trousers in khaki"},
-    {"name": "Zip-Up Hoodie", "sku": "CLTH-003", "price": 49.99, "cost": 18.00, "stock_quantity": 35, "reorder_threshold": 10, "category": "Clothing", "description": "Midweight fleece zip-up hoodie"},
-    {"name": "Canvas Sneakers", "sku": "CLTH-004", "price": 44.99, "cost": 16.00, "stock_quantity": 28, "reorder_threshold": 10, "category": "Clothing", "description": "Low-top canvas sneakers, vulcanized sole"},
+    {"name": "Classic Crew Neck Tee", "sku": "CLTH-001", "price": 24.99, "cost": 7.00, "stock_quantity": 120, "reorder_threshold": 30, "category": "Clothing", "description": "100% cotton crew neck t-shirt, unisex fit", "image_url": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop&q=80"},
+    {"name": "Slim Fit Chinos", "sku": "CLTH-002", "price": 59.99, "cost": 22.00, "stock_quantity": 4, "reorder_threshold": 15, "category": "Clothing", "description": "Slim-fit chino trousers in khaki", "image_url": "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=400&h=400&fit=crop&q=80"},
+    {"name": "Zip-Up Hoodie", "sku": "CLTH-003", "price": 49.99, "cost": 18.00, "stock_quantity": 35, "reorder_threshold": 10, "category": "Clothing", "description": "Midweight fleece zip-up hoodie", "image_url": "https://images.unsplash.com/photo-1556821840-3a63f15732ce?w=400&h=400&fit=crop&q=80"},
+    {"name": "Canvas Sneakers", "sku": "CLTH-004", "price": 44.99, "cost": 16.00, "stock_quantity": 28, "reorder_threshold": 10, "category": "Clothing", "description": "Low-top canvas sneakers, vulcanized sole", "image_url": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=400&fit=crop&q=80"},
     # Home & Kitchen
-    {"name": "Ceramic Pour-Over Set", "sku": "HOME-001", "price": 29.99, "cost": 10.00, "stock_quantity": 18, "reorder_threshold": 8, "category": "Home & Kitchen", "description": "Ceramic dripper with glass server and filters"},
-    {"name": "Bamboo Cutting Board", "sku": "HOME-002", "price": 19.99, "cost": 6.50, "stock_quantity": 55, "reorder_threshold": 15, "category": "Home & Kitchen", "description": "Extra-large bamboo cutting board with juice groove"},
-    {"name": "Stainless Steel Water Bottle", "sku": "HOME-003", "price": 27.99, "cost": 9.00, "stock_quantity": 3, "reorder_threshold": 20, "category": "Home & Kitchen", "description": "Vacuum-insulated 32oz water bottle"},
-    {"name": "Non-stick Pan 10in", "sku": "HOME-004", "price": 34.99, "cost": 13.00, "stock_quantity": 14, "reorder_threshold": 8, "category": "Home & Kitchen", "description": "PFOA-free non-stick frying pan"},
+    {"name": "Ceramic Pour-Over Set", "sku": "HOME-001", "price": 29.99, "cost": 10.00, "stock_quantity": 18, "reorder_threshold": 8, "category": "Home & Kitchen", "description": "Ceramic dripper with glass server and filters", "image_url": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&h=400&fit=crop&q=80"},
+    {"name": "Bamboo Cutting Board", "sku": "HOME-002", "price": 19.99, "cost": 6.50, "stock_quantity": 55, "reorder_threshold": 15, "category": "Home & Kitchen", "description": "Extra-large bamboo cutting board with juice groove", "image_url": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=400&fit=crop&q=80"},
+    {"name": "Stainless Steel Water Bottle", "sku": "HOME-003", "price": 27.99, "cost": 9.00, "stock_quantity": 3, "reorder_threshold": 20, "category": "Home & Kitchen", "description": "Vacuum-insulated 32oz water bottle", "image_url": "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=400&h=400&fit=crop&q=80"},
+    {"name": "Non-stick Pan 10in", "sku": "HOME-004", "price": 34.99, "cost": 13.00, "stock_quantity": 14, "reorder_threshold": 8, "category": "Home & Kitchen", "description": "PFOA-free non-stick frying pan", "image_url": "https://images.unsplash.com/photo-1585515320310-259814833e62?w=400&h=400&fit=crop&q=80"},
     # Books
-    {"name": "The Lean Startup", "sku": "BOOK-001", "price": 16.99, "cost": 5.00, "stock_quantity": 30, "reorder_threshold": 10, "category": "Books", "description": "By Eric Ries — build, measure, learn methodology"},
-    {"name": "Atomic Habits", "sku": "BOOK-002", "price": 18.99, "cost": 5.50, "stock_quantity": 42, "reorder_threshold": 10, "category": "Books", "description": "By James Clear — building good habits"},
-    {"name": "Designing Data-Intensive Apps", "sku": "BOOK-003", "price": 49.99, "cost": 18.00, "stock_quantity": 9, "reorder_threshold": 5, "category": "Books", "description": "By Martin Kleppmann — distributed systems deep dive"},
+    {"name": "The Lean Startup", "sku": "BOOK-001", "price": 16.99, "cost": 5.00, "stock_quantity": 30, "reorder_threshold": 10, "category": "Books", "description": "By Eric Ries — build, measure, learn methodology", "image_url": "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=400&h=400&fit=crop&q=80"},
+    {"name": "Atomic Habits", "sku": "BOOK-002", "price": 18.99, "cost": 5.50, "stock_quantity": 42, "reorder_threshold": 10, "category": "Books", "description": "By James Clear — building good habits", "image_url": "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=400&h=400&fit=crop&q=80"},
+    {"name": "Designing Data-Intensive Apps", "sku": "BOOK-003", "price": 49.99, "cost": 18.00, "stock_quantity": 9, "reorder_threshold": 5, "category": "Books", "description": "By Martin Kleppmann — distributed systems deep dive", "image_url": "https://images.unsplash.com/photo-1491841573634-28140fc7ced7?w=400&h=400&fit=crop&q=80"},
     # Sports
-    {"name": "Resistance Band Set", "sku": "SPRT-001", "price": 22.99, "cost": 7.00, "stock_quantity": 75, "reorder_threshold": 20, "category": "Sports", "description": "Set of 5 resistance bands with door anchor and handles"},
-    {"name": "Yoga Mat 6mm", "sku": "SPRT-002", "price": 31.99, "cost": 10.50, "stock_quantity": 5, "reorder_threshold": 10, "category": "Sports", "description": "Non-slip TPE yoga mat with alignment lines"},
-    {"name": "Adjustable Dumbbell 25lb", "sku": "SPRT-003", "price": 89.99, "cost": 38.00, "stock_quantity": 12, "reorder_threshold": 5, "category": "Sports", "description": "Single adjustable dumbbell 5–25 lb in 5 lb increments"},
-    {"name": "Jump Rope Speed Cable", "sku": "SPRT-004", "price": 14.99, "cost": 4.00, "stock_quantity": 50, "reorder_threshold": 15, "category": "Sports", "description": "Ball-bearing speed jump rope with steel cable"},
+    {"name": "Resistance Band Set", "sku": "SPRT-001", "price": 22.99, "cost": 7.00, "stock_quantity": 75, "reorder_threshold": 20, "category": "Sports", "description": "Set of 5 resistance bands with door anchor and handles", "image_url": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=400&fit=crop&q=80"},
+    {"name": "Yoga Mat 6mm", "sku": "SPRT-002", "price": 31.99, "cost": 10.50, "stock_quantity": 5, "reorder_threshold": 10, "category": "Sports", "description": "Non-slip TPE yoga mat with alignment lines", "image_url": "https://images.unsplash.com/photo-1599447421416-3414500d18a5?w=400&h=400&fit=crop&q=80"},
+    {"name": "Adjustable Dumbbell 25lb", "sku": "SPRT-003", "price": 89.99, "cost": 38.00, "stock_quantity": 12, "reorder_threshold": 5, "category": "Sports", "description": "Single adjustable dumbbell 5–25 lb in 5 lb increments", "image_url": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&h=400&fit=crop&q=80"},
+    {"name": "Jump Rope Speed Cable", "sku": "SPRT-004", "price": 14.99, "cost": 4.00, "stock_quantity": 50, "reorder_threshold": 15, "category": "Sports", "description": "Ball-bearing speed jump rope with steel cable", "image_url": "https://images.unsplash.com/photo-1434596922112-19c563067271?w=400&h=400&fit=crop&q=80"},
 ]
 
 CUSTOMERS = [
@@ -109,10 +109,17 @@ ORDER_TEMPLATES = [
 # Seeder
 # ---------------------------------------------------------------------------
 
-def seed(db: Session) -> None:
+def seed(db: Session, reset: bool = False) -> None:
     if db.query(Product).count() > 0:
-        print("Database already seeded — skipping.")
-        return
+        if not reset:
+            print("Database already seeded — skipping. Use --reset to wipe and re-seed.")
+            return
+        print("Resetting existing data...")
+        db.query(OrderItem).delete()
+        db.query(Order).delete()
+        db.query(Customer).delete()
+        db.query(Product).delete()
+        db.commit()
 
     print("Seeding products...")
     sku_to_product: dict[str, Product] = {}
@@ -174,8 +181,10 @@ def seed(db: Session) -> None:
 
 
 if __name__ == "__main__":
+    import sys
+    reset = "--reset" in sys.argv
     db = SessionLocal()
     try:
-        seed(db)
+        seed(db, reset=reset)
     finally:
         db.close()

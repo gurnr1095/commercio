@@ -1,20 +1,21 @@
+import { useState } from "react";
 import { Pencil, Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import type { Product } from "@/types/product";
 
 const CATEGORY_COLOR: Record<string, string> = {
   Electronics: "#3b82f6",
-  Clothing: "#a855f7",
+  Clothing: "#f43f5e",
   "Home & Kitchen": "#f59e0b",
-  Books: "#22c55e",
+  Books: "#14b8a6",
   Sports: "#f97316",
 };
 
 const CATEGORY_BADGE: Record<string, string> = {
   Electronics: "bg-blue-100 text-blue-700",
-  Clothing: "bg-purple-100 text-purple-700",
+  Clothing: "bg-rose-100 text-rose-700",
   "Home & Kitchen": "bg-amber-100 text-amber-800",
-  Books: "bg-green-100 text-green-700",
+  Books: "bg-teal-100 text-teal-700",
   Sports: "bg-orange-100 text-orange-700",
 };
 
@@ -31,26 +32,40 @@ type Props = {
 };
 
 export default function ProductCard({ product, onEdit, onDelete }: Props) {
+  const [imgFailed, setImgFailed] = useState(false);
   const stock = stockBadge(product.stock_quantity, product.reorder_threshold);
   const barColor = product.category ? (CATEGORY_COLOR[product.category] ?? "#9ca3af") : "#9ca3af";
   const badgeClass = product.category
     ? (CATEGORY_BADGE[product.category] ?? "bg-gray-100 text-gray-700")
     : "bg-gray-100 text-gray-700";
+  const showImage = Boolean(product.image_url) && !imgFailed;
 
   return (
     <div className="flex flex-col rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden hover:shadow-md transition-shadow">
-      {/* Category colour bar */}
-      <div className="h-1.5 w-full shrink-0" style={{ backgroundColor: barColor }} />
+      {showImage ? (
+        <div className="h-36 w-full shrink-0 overflow-hidden bg-gray-100">
+          <img
+            src={product.image_url!}
+            alt={product.name}
+            className="h-full w-full object-cover"
+            onError={() => setImgFailed(true)}
+          />
+        </div>
+      ) : (
+        <div className="h-1.5 w-full shrink-0" style={{ backgroundColor: barColor }} />
+      )}
 
       <div className="flex flex-col flex-1 p-4 gap-3">
         {/* Category + stock badges */}
-        <div className="flex items-center gap-2 flex-wrap">
-          {product.category && (
-            <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${badgeClass}`}>
+        <div className="flex items-center justify-between gap-2">
+          {product.category ? (
+            <span className={`text-xs font-medium px-2 py-0.5 rounded-full truncate ${badgeClass}`}>
               {product.category}
             </span>
+          ) : (
+            <span />
           )}
-          <Badge variant={stock.variant} className="ml-auto shrink-0">
+          <Badge variant={stock.variant} className="shrink-0">
             {stock.label}
           </Badge>
         </div>

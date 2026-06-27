@@ -62,7 +62,7 @@ def update_product(
     _: AuthUser = Depends(get_current_user),
 ) -> Product:
     product = _get_or_404(db, product_id)
-    for field, value in body.model_dump(exclude_none=True).items():
+    for field, value in body.model_dump(exclude_unset=True).items():
         setattr(product, field, value)
     db.commit()
     db.refresh(product)
