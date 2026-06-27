@@ -184,7 +184,9 @@ export default function Analytics() {
                   tickLine={false}
                 />
                 <YAxis
-                  tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`}
+                  tickFormatter={(v) =>
+                    v >= 1000 ? `$${(v / 1000).toFixed(1)}k` : `$${v}`
+                  }
                   tick={{ fontSize: 11, fill: "#9ca3af" }}
                   axisLine={false}
                   tickLine={false}
@@ -275,7 +277,9 @@ export default function Analytics() {
               <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" horizontal={false} />
               <XAxis
                 type="number"
-                tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`}
+                tickFormatter={(v) =>
+                  v >= 1000 ? `$${(v / 1000).toFixed(1)}k` : `$${v}`
+                }
                 tick={{ fontSize: 11, fill: "#9ca3af" }}
                 axisLine={false}
                 tickLine={false}

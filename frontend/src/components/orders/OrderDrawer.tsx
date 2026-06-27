@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { AlertTriangle, X } from "lucide-react";
+import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -52,17 +53,27 @@ type Props = {
 };
 
 export default function OrderDrawer({ order, onClose }: Props) {
-  const [error, setError] = useState<string | null>(null);
+  const [confirmCancel, setConfirmCancel] = useState(false);
   const updateStatus = useUpdateOrderStatus();
+
+  useEffect(() => {
+    setConfirmCancel(false);
+  }, [order?.id]);
 
   async function handleAction(next: OrderStatus) {
     if (!order) return;
-    setError(null);
     try {
       await updateStatus.mutateAsync({ id: order.id, status: next });
+      toast.success(
+        next === "PROCESSING"
+          ? `Order #${order.id} is now processing`
+          : next === "COMPLETED"
+          ? `Order #${order.id} completed`
+          : `Order #${order.id} cancelled`
+      );
+      if (next === "COMPLETED" || next === "CANCELLED") onClose();
     } catch (err) {
-      const msg = err instanceof Error ? err.message : "Something went wrong.";
-      setError(msg.replace("API 422: ", "").replace(/^"/, "").replace(/"$/, ""));
+      toast.error(err instanceof Error ? err.message : "Failed to update status");
     }
   }
 
@@ -101,17 +112,17 @@ export default function OrderDrawer({ order, onClose }: Props) {
             <div className="rounded-lg border border-gray-200 overflow-hidden">
               <table className="min-w-full text-sm">
                 <thead>
-                  <tr className="bg-gray-50 border-b border-gray-200">
-                    <th className="px-4 py-2.5 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                  <tr className="bg-violet-50 border-b border-violet-100">
+                    <th className="px-4 py-2.5 text-left text-xs font-semibold text-violet-600 uppercase tracking-wide">
                       Product
                     </th>
-                    <th className="px-4 py-2.5 text-right text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                    <th className="px-4 py-2.5 text-right text-xs font-semibold text-violet-600 uppercase tracking-wide">
                       Qty
                     </th>
-                    <th className="px-4 py-2.5 text-right text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                    <th className="px-4 py-2.5 text-right text-xs font-semibold text-violet-600 uppercase tracking-wide">
                       Unit Price
                     </th>
-                    <th className="px-4 py-2.5 text-right text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                    <th className="px-4 py-2.5 text-right text-xs font-semibold text-violet-600 uppercase tracking-wide">
                       Subtotal
                     </th>
                   </tr>
@@ -144,11 +155,6 @@ export default function OrderDrawer({ order, onClose }: Props) {
             </div>
           </div>
 
-          {/* Error */}
-          {error && (
-            <p className="text-sm text-red-600 bg-red-50 rounded-md px-3 py-2">{error}</p>
-          )}
-
           {/* Terminal state note */}
           {order && actions.length === 0 && (
             <p className="text-sm text-gray-400 text-center py-2">
@@ -158,18 +164,70 @@ export default function OrderDrawer({ order, onClose }: Props) {
         </DrawerBody>
 
         {actions.length > 0 && (
-          <DrawerFooter>
-            {actions.map((action) => (
-              <Button
-                key={action.next}
-                variant={action.variant}
-                size="sm"
-                disabled={updateStatus.isPending}
-                onClick={() => handleAction(action.next)}
+          <DrawerFooter className="flex-col items-stretch gap-2">
+            {!confirmCancel ? (
+              <div className="flex gap-2 justify-end">
+                {actions
+                  .filter((a) => a.next !== "CANCELLED")
+                  .map((action) => (
+                    <Button
+                      key={action.next}
+                      variant={action.variant}
+                      size="sm"
+                      disabled={updateStatus.isPending}
+                      onClick={() => handleAction(action.next)}
+                    >
+                      {updateStatus.isPending ? "Updating…" : action.label}
+                    </Button>
+                  ))}
+                {actions.some((a) => a.next === "CANCELLED") && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled={updateStatus.isPending}
+                    onClick={() => setConfirmCancel(true)}
+                    className="text-red-600 hover:bg-red-50 hover:border-red-300"
+                  >
+                    Cancel Order
+                  </Button>
+                )}
+              </div>
+            ) : (
+              <div
+                className={`rounded-md p-3 text-sm space-y-2 border ${
+                  order?.status === "PROCESSING"
+                    ? "bg-amber-50 border-amber-200"
+                    : "bg-red-50 border-red-200"
+                }`}
               >
-                {updateStatus.isPending ? "Updating…" : action.label}
-              </Button>
-            ))}
+                <div className="flex gap-2 items-start">
+                  <AlertTriangle
+                    size={15}
+                    className={`mt-0.5 shrink-0 ${
+                      order?.status === "PROCESSING" ? "text-amber-600" : "text-red-500"
+                    }`}
+                  />
+                  <p className={order?.status === "PROCESSING" ? "text-amber-800" : "text-red-700"}>
+                    {order?.status === "PROCESSING"
+                      ? "Cancelling from Processing will restock all items. This cannot be undone."
+                      : "Cancel this order? This cannot be undone."}
+                  </p>
+                </div>
+                <div className="flex gap-2 justify-end">
+                  <Button size="sm" variant="outline" onClick={() => setConfirmCancel(false)}>
+                    Keep Order
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="destructive"
+                    disabled={updateStatus.isPending}
+                    onClick={() => { setConfirmCancel(false); handleAction("CANCELLED"); }}
+                  >
+                    {order?.status === "PROCESSING" ? "Cancel & Restock" : "Yes, Cancel"}
+                  </Button>
+                </div>
+              </div>
+            )}
           </DrawerFooter>
         )}
       </DrawerContent>

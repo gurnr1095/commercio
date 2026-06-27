@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Package, Plus, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,7 +11,8 @@ import type { Product } from "@/types/product";
 
 export default function Products() {
   const { data: products, isLoading, isError } = useProducts();
-  const [search, setSearch] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const search = searchParams.get("q") ?? "";
   const [editProduct, setEditProduct] = useState<Product | undefined>(undefined);
   const [modalOpen, setModalOpen] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<Product | null>(null);
@@ -55,7 +57,11 @@ export default function Products() {
         <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
         <Input
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => {
+            const val = e.target.value;
+            if (val) setSearchParams({ q: val });
+            else setSearchParams({});
+          }}
           placeholder="Search by name, SKU, or category…"
           className="pl-9"
         />

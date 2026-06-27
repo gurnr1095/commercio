@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -25,6 +26,7 @@ export default function DeleteConfirmDialog({ product, onClose }: Props) {
     setError(null);
     try {
       await del.mutateAsync(product.id);
+      toast.success(`"${product.name}" deleted`);
       onClose();
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Something went wrong.";

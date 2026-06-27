@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -71,8 +73,10 @@ export default function CustomerModal({ open, onClose, customer }: Props) {
     try {
       if (isEdit && customer) {
         await update.mutateAsync({ id: customer.id, ...payload });
+        toast.success("Customer updated");
       } else {
         await create.mutateAsync(payload);
+        toast.success("Customer added");
       }
       onClose();
     } catch (err) {
@@ -126,7 +130,7 @@ export default function CustomerModal({ open, onClose, customer }: Props) {
             </div>
 
             {error && (
-              <p className="text-sm text-red-600 bg-red-50 rounded-md px-3 py-2">{error}</p>
+              <p role="alert" className="text-sm text-red-600 bg-red-50 rounded-md px-3 py-2">{error}</p>
             )}
           </DialogBody>
 
@@ -135,7 +139,9 @@ export default function CustomerModal({ open, onClose, customer }: Props) {
               Cancel
             </Button>
             <Button type="submit" disabled={isPending}>
-              {isPending ? "Saving…" : isEdit ? "Save Changes" : "Add Customer"}
+              {isPending ? (
+                <><Loader2 size={14} className="animate-spin" /> Saving…</>
+              ) : isEdit ? "Save Changes" : "Add Customer"}
             </Button>
           </DialogFooter>
         </form>

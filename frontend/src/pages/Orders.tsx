@@ -82,7 +82,7 @@ export default function Orders() {
             onClick={() => setActiveTab(tab.value)}
             className={`flex items-center gap-1.5 px-3 py-2 text-sm font-medium border-b-2 -mb-px transition-colors ${
               activeTab === tab.value
-                ? "border-gray-900 text-gray-900"
+                ? "border-violet-600 text-violet-700"
                 : "border-transparent text-gray-500 hover:text-gray-700"
             }`}
           >
@@ -91,7 +91,7 @@ export default function Orders() {
               <span
                 className={`text-xs rounded-full px-1.5 py-0.5 ${
                   activeTab === tab.value
-                    ? "bg-gray-900 text-white"
+                    ? "bg-violet-600 text-white"
                     : "bg-gray-100 text-gray-500"
                 }`}
               >
@@ -126,11 +126,11 @@ export default function Orders() {
           <div className="overflow-x-auto">
             <table className="min-w-full text-sm">
               <thead>
-                <tr className="border-b border-gray-200 bg-gray-50">
+                <tr className="border-b border-violet-100 bg-violet-50">
                   {COLS.map((col) => (
                     <th
                       key={col}
-                      className={`px-4 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500 whitespace-nowrap ${
+                      className={`px-4 py-3 text-xs font-semibold uppercase tracking-wide text-violet-600 whitespace-nowrap ${
                         col === "Items" || col === "Total" ? "text-right" : "text-left"
                       }`}
                     >

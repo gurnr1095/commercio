@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -25,6 +27,7 @@ export default function DeleteConfirmDialog({ customer, onClose }: Props) {
     setError(null);
     try {
       await del.mutateAsync(customer.id);
+      toast.success(`"${customer.name}" deleted`);
       onClose();
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Something went wrong.";
@@ -53,7 +56,9 @@ export default function DeleteConfirmDialog({ customer, onClose }: Props) {
             Cancel
           </Button>
           <Button variant="destructive" onClick={handleDelete} disabled={del.isPending}>
-            {del.isPending ? "Deleting…" : "Delete"}
+            {del.isPending ? (
+              <><Loader2 size={14} className="animate-spin" /> Deleting…</>
+            ) : "Delete"}
           </Button>
         </DialogFooter>
       </DialogContent>

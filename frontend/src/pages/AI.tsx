@@ -40,7 +40,7 @@ function SectionHeader({
 }) {
   return (
     <div className="flex items-start gap-3 mb-5">
-      <div className="p-2 rounded-lg bg-indigo-50 text-indigo-600 mt-0.5">
+      <div className="p-2 rounded-lg bg-violet-50 text-violet-600 mt-0.5">
         <Icon size={18} />
       </div>
       <div>
@@ -65,7 +65,7 @@ function GenerateButton({
       onClick={onClick}
       disabled={loading}
       className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg
-        bg-indigo-600 text-white hover:bg-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed
+        bg-violet-600 text-white hover:bg-violet-700 disabled:opacity-60 disabled:cursor-not-allowed
         transition-colors"
     >
       {loading ? (
@@ -192,7 +192,7 @@ function InventoryResult({ data }: { data: InventoryAnalysis }) {
           <ul className="space-y-1.5">
             {data.insights.map((insight, i) => (
               <li key={i} className="flex items-start gap-2 text-sm text-gray-700">
-                <span className="mt-1 w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0" />
+                <span className="mt-1 w-1.5 h-1.5 rounded-full bg-violet-400 shrink-0" />
                 {insight}
               </li>
             ))}
@@ -216,10 +216,10 @@ function SalesResult({ data }: { data: SalesSummary }) {
       </div>
 
       {/* Top performer */}
-      <div className="flex items-start gap-2 rounded-lg border border-indigo-100 bg-indigo-50 px-4 py-3">
-        <BarChart2 size={16} className="text-indigo-500 mt-0.5 shrink-0" />
+      <div className="flex items-start gap-2 rounded-lg border border-violet-100 bg-violet-50 px-4 py-3">
+        <BarChart2 size={16} className="text-violet-500 mt-0.5 shrink-0" />
         <div>
-          <span className="text-xs font-semibold text-indigo-700 uppercase tracking-wide">Top Performer</span>
+          <span className="text-xs font-semibold text-violet-700 uppercase tracking-wide">Top Performer</span>
           <p className="text-sm text-gray-800 mt-0.5">{data.top_performer}</p>
         </div>
       </div>
@@ -234,7 +234,7 @@ function SalesResult({ data }: { data: SalesSummary }) {
             <ul className="space-y-1.5">
               {data.key_insights.map((insight, i) => (
                 <li key={i} className="flex items-start gap-2 text-sm text-gray-700">
-                  <span className="mt-1 w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0" />
+                  <span className="mt-1 w-1.5 h-1.5 rounded-full bg-violet-400 shrink-0" />
                   {insight}
                 </li>
               ))}
@@ -249,7 +249,7 @@ function SalesResult({ data }: { data: SalesSummary }) {
             <ul className="space-y-1.5">
               {data.recommendations.map((rec, i) => (
                 <li key={i} className="flex items-start gap-2 text-sm text-gray-700">
-                  <ArrowRight size={14} className="text-indigo-400 mt-0.5 shrink-0" />
+                  <ArrowRight size={14} className="text-violet-400 mt-0.5 shrink-0" />
                   {rec}
                 </li>
               ))}

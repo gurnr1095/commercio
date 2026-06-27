@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Plus, Trash2 } from "lucide-react";
+import { Loader2, Plus, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -95,6 +96,7 @@ export default function CreateOrderModal({ open, onClose }: Props) {
           quantity: parseInt(i.quantity, 10),
         })),
       });
+      toast.success("Order created");
       onClose();
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Something went wrong.";
@@ -118,7 +120,7 @@ export default function CreateOrderModal({ open, onClose }: Props) {
                 id="o-customer"
                 value={customerId}
                 onChange={(e) => setCustomerId(e.target.value)}
-                className="flex h-9 w-full rounded-md border border-gray-300 bg-white px-3 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
+                className="flex h-9 w-full rounded-md border border-gray-300 bg-white px-3 text-sm focus:outline-none focus:ring-2 focus:ring-violet-600 focus:border-transparent"
               >
                 <option value="">Select a customer…</option>
                 {(customers ?? []).map((c) => (
@@ -140,7 +142,7 @@ export default function CreateOrderModal({ open, onClose }: Props) {
                       <select
                         value={item.product_id}
                         onChange={(e) => updateLine(index, "product_id", e.target.value)}
-                        className="flex-1 h-9 rounded-md border border-gray-300 bg-white px-3 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900"
+                        className="flex-1 h-9 rounded-md border border-gray-300 bg-white px-3 text-sm focus:outline-none focus:ring-2 focus:ring-violet-600"
                       >
                         <option value="">Select product…</option>
                         {availableProducts(item.product_id).map((p) => (
@@ -199,7 +201,9 @@ export default function CreateOrderModal({ open, onClose }: Props) {
               Cancel
             </Button>
             <Button type="submit" disabled={create.isPending}>
-              {create.isPending ? "Creating…" : "Create Order"}
+              {create.isPending ? (
+                <><Loader2 size={14} className="animate-spin" /> Creating…</>
+              ) : "Create Order"}
             </Button>
           </DialogFooter>
         </form>

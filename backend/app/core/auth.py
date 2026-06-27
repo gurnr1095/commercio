@@ -7,6 +7,7 @@ to false and set the Clerk env vars to enforce real token verification.
 """
 
 from dataclasses import dataclass
+from datetime import timedelta
 
 import jwt
 from fastapi import Depends, HTTPException, status
@@ -61,6 +62,7 @@ def get_current_user(
             issuer=settings.clerk_issuer or None,
             audience=settings.clerk_audience or None,
             options={"verify_aud": bool(settings.clerk_audience)},
+            leeway=timedelta(seconds=60),
         )
     except jwt.PyJWTError as exc:  # noqa: BLE001 - surface as 401
         raise HTTPException(

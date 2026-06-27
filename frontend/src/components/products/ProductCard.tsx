@@ -71,6 +71,17 @@ export default function ProductCard({ product, onEdit, onDelete }: Props) {
           </span>
         </div>
 
+        {/* Margin */}
+        {product.cost > 0 && (
+          <div className="text-xs">
+            <span className="text-gray-400">Margin </span>
+            <span className="font-medium text-gray-700">
+              ${(product.price - product.cost).toFixed(2)}{" "}
+              ({Math.round(((product.price - product.cost) / product.price) * 100)}%)
+            </span>
+          </div>
+        )}
+
         {/* Stock */}
         <div className="flex gap-4 text-sm mt-auto">
           <div>
@@ -88,6 +99,7 @@ export default function ProductCard({ product, onEdit, onDelete }: Props) {
       <div className="flex border-t border-gray-100 shrink-0">
         <button
           onClick={() => onEdit(product)}
+          aria-label={`Edit ${product.name}`}
           className="flex-1 flex items-center justify-center gap-1.5 py-2.5 text-sm text-gray-600 hover:bg-gray-50 transition-colors"
         >
           <Pencil size={13} />
@@ -96,6 +108,7 @@ export default function ProductCard({ product, onEdit, onDelete }: Props) {
         <div className="w-px bg-gray-100" />
         <button
           onClick={() => onDelete(product)}
+          aria-label={`Delete ${product.name}`}
           className="flex-1 flex items-center justify-center gap-1.5 py-2.5 text-sm text-red-500 hover:bg-red-50 transition-colors"
         >
           <Trash2 size={13} />

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Pencil, Plus, Search, Trash2, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,7 +13,8 @@ const COLS = ["Name", "Email", "Phone", "Orders", "Total Spent", "Last Order", "
 
 export default function Customers() {
   const { data: customers, isLoading, isError } = useCustomers();
-  const [search, setSearch] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const search = searchParams.get("q") ?? "";
   const [editCustomer, setEditCustomer] = useState<Customer | undefined>(undefined);
   const [modalOpen, setModalOpen] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<Customer | null>(null);
@@ -57,7 +59,11 @@ export default function Customers() {
         <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
         <Input
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => {
+            const val = e.target.value;
+            if (val) setSearchParams({ q: val });
+            else setSearchParams({});
+          }}
           placeholder="Search by name, email, or phone…"
           className="pl-9"
         />
@@ -76,11 +82,11 @@ export default function Customers() {
           <div className="overflow-x-auto">
             <table className="min-w-full text-sm">
               <thead>
-                <tr className="border-b border-gray-200 bg-gray-50">
+                <tr className="border-b border-violet-100 bg-violet-50">
                   {COLS.map((col) => (
                     <th
                       key={col}
-                      className={`px-4 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500 whitespace-nowrap ${
+                      className={`px-4 py-3 text-xs font-semibold uppercase tracking-wide text-violet-600 whitespace-nowrap ${
                         col === "Orders" || col === "Total Spent" ? "text-right" : "text-left"
                       }`}
                     >
@@ -155,15 +161,15 @@ export default function Customers() {
                         <div className="flex items-center justify-end gap-1">
                           <button
                             onClick={() => openEdit(c)}
+                            aria-label={`Edit ${c.name}`}
                             className="rounded-md p-1.5 text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
-                            title="Edit"
                           >
                             <Pencil size={14} />
                           </button>
                           <button
                             onClick={() => setDeleteTarget(c)}
+                            aria-label={`Delete ${c.name}`}
                             className="rounded-md p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors"
-                            title="Delete"
                           >
                             <Trash2 size={14} />
                           </button>

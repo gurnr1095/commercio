@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -112,8 +114,10 @@ export default function ProductModal({ open, onClose, product }: Props) {
       if (isEdit && product) {
         const { sku: _sku, ...updatePayload } = payload;
         await update.mutateAsync({ id: product.id, ...updatePayload });
+        toast.success("Product updated");
       } else {
         await create.mutateAsync(payload);
+        toast.success("Product added");
       }
       onClose();
     } catch (err) {
@@ -152,7 +156,19 @@ export default function ProductModal({ open, onClose, product }: Props) {
             </div>
             <div className="flex flex-col gap-1.5">
               <Label htmlFor="p-cat">Category</Label>
-              <Input id="p-cat" value={form.category} onChange={set("category")} placeholder="Electronics" />
+              <select
+                id="p-cat"
+                value={form.category}
+                onChange={(e) => setForm((prev) => ({ ...prev, category: e.target.value }))}
+                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-violet-600 focus:border-transparent"
+              >
+                <option value="">Select category…</option>
+                <option value="Electronics">Electronics</option>
+                <option value="Clothing">Clothing</option>
+                <option value="Home & Kitchen">Home &amp; Kitchen</option>
+                <option value="Books">Books</option>
+                <option value="Sports">Sports</option>
+              </select>
             </div>
 
             {/* Price + Cost */}
@@ -189,7 +205,7 @@ export default function ProductModal({ open, onClose, product }: Props) {
 
             {/* Error */}
             {error && (
-              <p className="col-span-2 text-sm text-red-600 bg-red-50 rounded-md px-3 py-2">
+              <p role="alert" className="col-span-2 text-sm text-red-600 bg-red-50 rounded-md px-3 py-2">
                 {error}
               </p>
             )}
@@ -200,7 +216,12 @@ export default function ProductModal({ open, onClose, product }: Props) {
               Cancel
             </Button>
             <Button type="submit" disabled={isPending}>
-              {isPending ? "Saving…" : isEdit ? "Save Changes" : "Add Product"}
+              {isPending ? (
+                <>
+                  <Loader2 size={14} className="animate-spin" />
+                  Saving…
+                </>
+              ) : isEdit ? "Save Changes" : "Add Product"}
             </Button>
           </DialogFooter>
         </form>
