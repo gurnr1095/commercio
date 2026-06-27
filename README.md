@@ -27,8 +27,6 @@ A **merchant operating system** — a unified back-office dashboard for products
 
 ## Screenshots
 
-> Add screenshots here after deploying — replace the paths below.
-
 | Dashboard | Products |
 |-----------|----------|
 | ![Dashboard](docs/screenshots/dashboard.png) | ![Products](docs/screenshots/products.png) |
@@ -37,9 +35,9 @@ A **merchant operating system** — a unified back-office dashboard for products
 |--------|-----------|
 | ![Orders](docs/screenshots/orders.png) | ![Analytics](docs/screenshots/analytics.png) |
 
-| AI Insights |
-|-------------|
-| ![AI Insights](docs/screenshots/ai.png) |
+| Customers | AI Insights |
+|-----------|-------------|
+| ![Customers](docs/screenshots/customers.png) | ![AI Insights](docs/screenshots/ai.png) |
 
 ## Local development
 
