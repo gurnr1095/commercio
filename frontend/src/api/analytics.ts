@@ -3,11 +3,13 @@ import { apiFetch } from "@/lib/api";
 import { useGetToken } from "@/lib/auth";
 import type { AnalyticsSummary } from "@/types/analytics";
 
-export function useAnalyticsSummary() {
+export function useAnalyticsSummary(days?: number) {
   const getToken = useGetToken();
   return useQuery({
-    queryKey: ["analytics"],
-    queryFn: async () =>
-      apiFetch<AnalyticsSummary>("/analytics/summary", { token: await getToken() }),
+    queryKey: ["analytics", days ?? "all"],
+    queryFn: async () => {
+      const url = days != null ? `/analytics/summary?days=${days}` : "/analytics/summary";
+      return apiFetch<AnalyticsSummary>(url, { token: await getToken() });
+    },
   });
 }

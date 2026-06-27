@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { Plus, Search, ShoppingCart } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronUp,
+  ChevronsUpDown,
+  Plus,
+  Search,
+  ShoppingCart,
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,6 +17,8 @@ import { formatDate, formatMoney } from "@/lib/format";
 import type { Order, OrderStatus } from "@/types/order";
 
 type FilterTab = "ALL" | OrderStatus;
+type SortField = "id" | "customer_name" | "items" | "total" | "created_at";
+type SortDir = "asc" | "desc";
 
 const TABS: { label: string; value: FilterTab }[] = [
   { label: "All", value: "ALL" },
@@ -26,14 +35,52 @@ const STATUS_BADGE: Record<OrderStatus, { variant: "warning" | "info" | "success
   CANCELLED: { variant: "default", label: "Cancelled" },
 };
 
-const COLS = ["Order", "Customer", "Status", "Items", "Total", "Date", ""];
+function SortTh({
+  label,
+  field,
+  sort,
+  onSort,
+  align = "left",
+}: {
+  label: string;
+  field: SortField;
+  sort: { field: SortField; dir: SortDir };
+  onSort: (f: SortField) => void;
+  align?: "left" | "right";
+}) {
+  const active = sort.field === field;
+  const Icon = active ? (sort.dir === "asc" ? ChevronUp : ChevronDown) : ChevronsUpDown;
+  return (
+    <th
+      onClick={() => onSort(field)}
+      className={`px-4 py-3 text-xs font-semibold uppercase tracking-wide text-violet-600 whitespace-nowrap cursor-pointer select-none hover:text-violet-800 ${align === "right" ? "text-right" : "text-left"}`}
+    >
+      <span className={`inline-flex items-center gap-0.5 ${align === "right" ? "flex-row-reverse" : ""}`}>
+        {label}
+        <Icon size={11} className={active ? "" : "opacity-30"} />
+      </span>
+    </th>
+  );
+}
 
 export default function Orders() {
   const { data: orders, isLoading, isError } = useOrders();
   const [activeTab, setActiveTab] = useState<FilterTab>("ALL");
   const [search, setSearch] = useState("");
+  const [sort, setSort] = useState<{ field: SortField; dir: SortDir }>({
+    field: "created_at",
+    dir: "desc",
+  });
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [createOpen, setCreateOpen] = useState(false);
+
+  function toggleSort(field: SortField) {
+    setSort((s) =>
+      s.field === field
+        ? { field, dir: s.dir === "asc" ? "desc" : "asc" }
+        : { field, dir: "asc" }
+    );
+  }
 
   const counts: Record<FilterTab, number> = {
     ALL: orders?.length ?? 0,
@@ -51,6 +98,24 @@ export default function Orders() {
       String(o.id).includes(q) ||
       o.customer_name.toLowerCase().includes(q);
     return matchesTab && matchesSearch;
+  });
+
+  const sorted = [...filtered].sort((a, b) => {
+    const mul = sort.dir === "asc" ? 1 : -1;
+    switch (sort.field) {
+      case "id":
+        return mul * (a.id - b.id);
+      case "customer_name":
+        return mul * a.customer_name.localeCompare(b.customer_name);
+      case "items":
+        return mul * (a.items.length - b.items.length);
+      case "total":
+        return mul * (a.total - b.total);
+      case "created_at":
+        return mul * (new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+      default:
+        return 0;
+    }
   });
 
   // Keep drawer in sync when the order is updated via status transitions
@@ -127,16 +192,15 @@ export default function Orders() {
             <table className="min-w-full text-sm">
               <thead>
                 <tr className="border-b border-violet-100 bg-violet-50">
-                  {COLS.map((col) => (
-                    <th
-                      key={col}
-                      className={`px-4 py-3 text-xs font-semibold uppercase tracking-wide text-violet-600 whitespace-nowrap ${
-                        col === "Items" || col === "Total" ? "text-right" : "text-left"
-                      }`}
-                    >
-                      {col}
-                    </th>
-                  ))}
+                  <SortTh label="Order" field="id" sort={sort} onSort={toggleSort} />
+                  <SortTh label="Customer" field="customer_name" sort={sort} onSort={toggleSort} />
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-violet-600 whitespace-nowrap">
+                    Status
+                  </th>
+                  <SortTh label="Items" field="items" sort={sort} onSort={toggleSort} align="right" />
+                  <SortTh label="Total" field="total" sort={sort} onSort={toggleSort} align="right" />
+                  <SortTh label="Date" field="created_at" sort={sort} onSort={toggleSort} />
+                  <th className="px-4 py-3" />
                 </tr>
               </thead>
               <tbody>
@@ -157,7 +221,7 @@ export default function Orders() {
 
                 {/* Rows */}
                 {!isLoading &&
-                  filtered.map((order) => {
+                  sorted.map((order) => {
                     const badge = STATUS_BADGE[order.status];
                     return (
                       <tr
@@ -194,7 +258,7 @@ export default function Orders() {
           </div>
 
           {/* Empty state */}
-          {!isLoading && filtered.length === 0 && (
+          {!isLoading && sorted.length === 0 && (
             <div className="flex flex-col items-center justify-center py-16 text-center">
               <ShoppingCart size={40} className="text-gray-300 mb-3" />
               {search || activeTab !== "ALL" ? (

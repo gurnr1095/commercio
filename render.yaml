@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: commercio-api
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    dockerBuildTarget: prod
+    plan: free
+    preDeployCommand: alembic upgrade head
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: AUTH_DISABLED
+        value: false
+      - key: CLERK_JWKS_URL
+        sync: false
+      - key: CLERK_ISSUER
+        sync: false
+      - key: CLERK_AUDIENCE
+        value: ""
+      - key: OPENROUTER_API_KEY
+        sync: false
+      - key: OPENROUTER_MODELS
+        value: meta-llama/llama-3.3-70b-instruct:free,google/gemini-2.0-flash-exp:free

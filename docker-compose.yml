@@ -20,6 +20,7 @@ services:
   backend:
     build:
       context: ./backend
+      target: dev
     container_name: commercio-backend
     restart: unless-stopped
     env_file:
@@ -37,6 +38,7 @@ services:
   frontend:
     build:
       context: ./frontend
+      target: dev
     container_name: commercio-frontend
     restart: unless-stopped
     env_file:

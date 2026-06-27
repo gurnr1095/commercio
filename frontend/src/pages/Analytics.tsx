@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   AlertTriangle,
   DollarSign,
@@ -36,6 +37,14 @@ const STATUS_LABELS: Record<string, string> = {
   COMPLETED: "Completed",
   CANCELLED: "Cancelled",
 };
+
+type RangeOption = { label: string; days: number | undefined };
+const RANGE_OPTIONS: RangeOption[] = [
+  { label: "7d", days: 7 },
+  { label: "30d", days: 30 },
+  { label: "90d", days: 90 },
+  { label: "All", days: undefined },
+];
 
 type KpiProps = {
   title: string;
@@ -94,7 +103,21 @@ function SkeletonCard() {
 }
 
 export default function Analytics() {
-  const { data, isLoading, isError } = useAnalyticsSummary();
+  const [activeDays, setActiveDays] = useState<number | undefined>(30);
+  const { data, isLoading, isError } = useAnalyticsSummary(activeDays);
+
+  const chartDataLen = data?.revenue_by_day.length ?? 30;
+  const xAxisInterval =
+    chartDataLen <= 7 ? 0 : chartDataLen <= 30 ? 4 : chartDataLen <= 90 ? 9 : 29;
+
+  const chartTitle =
+    activeDays === 7
+      ? "Revenue — Last 7 Days"
+      : activeDays === 30
+      ? "Revenue — Last 30 Days"
+      : activeDays === 90
+      ? "Revenue — Last 90 Days"
+      : "Revenue — All Time";
 
   if (isError) {
     return (
@@ -109,7 +132,25 @@ export default function Analytics() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-semibold tracking-tight">Analytics</h1>
+      {/* Header + range toggle */}
+      <div className="flex items-center justify-between gap-4 flex-wrap">
+        <h1 className="text-2xl font-semibold tracking-tight">Analytics</h1>
+        <div className="flex items-center bg-gray-100 rounded-lg p-1 gap-0.5">
+          {RANGE_OPTIONS.map((opt) => (
+            <button
+              key={opt.label}
+              onClick={() => setActiveDays(opt.days)}
+              className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
+                activeDays === opt.days
+                  ? "bg-white text-violet-700 shadow-sm"
+                  : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      </div>
 
       {/* KPI cards */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
@@ -136,7 +177,7 @@ export default function Analytics() {
               value={formatMoney(data!.avg_order_value)}
               sub="Completed orders only"
               icon={TrendingUp}
-              iconBg="bg-purple-100 text-purple-600"
+              iconBg="bg-violet-100 text-violet-600"
             />
             <KpiCard
               title="Customers"
@@ -162,7 +203,7 @@ export default function Analytics() {
 
       {/* Charts row: Revenue trend + Orders by status */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <ChartCard title="Revenue — Last 30 Days" className="lg:col-span-2">
+        <ChartCard title={chartTitle} className="lg:col-span-2">
           {isLoading ? (
             <div className="h-56 bg-gray-50 rounded-lg animate-pulse" />
           ) : (
@@ -170,15 +211,15 @@ export default function Analytics() {
               <AreaChart data={data!.revenue_by_day} margin={{ top: 4, right: 4, left: 0, bottom: 0 }}>
                 <defs>
                   <linearGradient id="revenueGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#6366f1" stopOpacity={0.18} />
-                    <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
+                    <stop offset="5%" stopColor="#7c3aed" stopOpacity={0.18} />
+                    <stop offset="95%" stopColor="#7c3aed" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
                 <XAxis
                   dataKey="date"
                   tickFormatter={formatDateTick}
-                  interval={4}
+                  interval={xAxisInterval}
                   tick={{ fontSize: 11, fill: "#9ca3af" }}
                   axisLine={false}
                   tickLine={false}
@@ -200,7 +241,7 @@ export default function Analytics() {
                 <Area
                   type="monotone"
                   dataKey="revenue"
-                  stroke="#6366f1"
+                  stroke="#7c3aed"
                   strokeWidth={2}
                   fill="url(#revenueGrad)"
                   dot={false}
@@ -296,7 +337,7 @@ export default function Analytics() {
                 formatter={(value: number) => [formatMoney(value), "Revenue"]}
                 contentStyle={{ fontSize: 12, borderRadius: 8, border: "1px solid #e5e7eb" }}
               />
-              <Bar dataKey="revenue" fill="#6366f1" radius={[0, 4, 4, 0]} />
+              <Bar dataKey="revenue" fill="#7c3aed" radius={[0, 4, 4, 0]} />
             </BarChart>
           </ResponsiveContainer>
         )}

@@ -1,32 +1,90 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Pencil, Plus, Search, Trash2, Users } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronUp,
+  ChevronsUpDown,
+  Pencil,
+  Plus,
+  Search,
+  Trash2,
+  Users,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import CustomerModal from "@/components/customers/CustomerModal";
+import CustomerDrawer from "@/components/customers/CustomerDrawer";
 import DeleteConfirmDialog from "@/components/customers/DeleteConfirmDialog";
 import { useCustomers } from "@/api/customers";
 import { formatDate, formatMoney } from "@/lib/format";
 import type { Customer } from "@/types/customer";
 
-const COLS = ["Name", "Email", "Phone", "Orders", "Total Spent", "Last Order", "Joined", ""];
+type SortField = "name" | "total_orders" | "total_spent" | "last_order_date" | "created_at";
+type SortDir = "asc" | "desc";
+
+function SortTh({
+  label,
+  field,
+  sort,
+  onSort,
+  align = "left",
+}: {
+  label: string;
+  field: SortField;
+  sort: { field: SortField; dir: SortDir };
+  onSort: (f: SortField) => void;
+  align?: "left" | "right";
+}) {
+  const active = sort.field === field;
+  const Icon = active ? (sort.dir === "asc" ? ChevronUp : ChevronDown) : ChevronsUpDown;
+  return (
+    <th
+      onClick={() => onSort(field)}
+      className={`px-4 py-3 text-xs font-semibold uppercase tracking-wide text-violet-600 whitespace-nowrap cursor-pointer select-none hover:text-violet-800 ${align === "right" ? "text-right" : "text-left"}`}
+    >
+      <span className={`inline-flex items-center gap-0.5 ${align === "right" ? "flex-row-reverse" : ""}`}>
+        {label}
+        <Icon size={11} className={active ? "" : "opacity-30"} />
+      </span>
+    </th>
+  );
+}
 
 export default function Customers() {
   const { data: customers, isLoading, isError } = useCustomers();
   const [searchParams, setSearchParams] = useSearchParams();
   const search = searchParams.get("q") ?? "";
+  const [sort, setSort] = useState<{ field: SortField; dir: SortDir }>({
+    field: "name",
+    dir: "asc",
+  });
   const [editCustomer, setEditCustomer] = useState<Customer | undefined>(undefined);
   const [modalOpen, setModalOpen] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<Customer | null>(null);
+  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
 
   function openCreate() {
     setEditCustomer(undefined);
     setModalOpen(true);
   }
 
-  function openEdit(customer: Customer) {
+  function openEdit(e: React.MouseEvent, customer: Customer) {
+    e.stopPropagation();
     setEditCustomer(customer);
     setModalOpen(true);
+  }
+
+  function openDelete(e: React.MouseEvent, customer: Customer) {
+    e.stopPropagation();
+    setDeleteTarget(customer);
+  }
+
+  function toggleSort(field: SortField) {
+    setSort((s) =>
+      s.field === field
+        ? { field, dir: s.dir === "asc" ? "desc" : "asc" }
+        : { field, dir: "asc" }
+    );
   }
 
   const filtered = (customers ?? []).filter((c) => {
@@ -36,6 +94,27 @@ export default function Customers() {
       (c.email ?? "").toLowerCase().includes(q) ||
       (c.phone ?? "").toLowerCase().includes(q)
     );
+  });
+
+  const sorted = [...filtered].sort((a, b) => {
+    const mul = sort.dir === "asc" ? 1 : -1;
+    switch (sort.field) {
+      case "name":
+        return mul * a.name.localeCompare(b.name);
+      case "total_orders":
+        return mul * (a.total_orders - b.total_orders);
+      case "total_spent":
+        return mul * (a.total_spent - b.total_spent);
+      case "created_at":
+        return mul * (new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+      case "last_order_date": {
+        const aT = a.last_order_date ? new Date(a.last_order_date).getTime() : 0;
+        const bT = b.last_order_date ? new Date(b.last_order_date).getTime() : 0;
+        return mul * (aT - bT);
+      }
+      default:
+        return 0;
+    }
   });
 
   return (
@@ -83,16 +162,18 @@ export default function Customers() {
             <table className="min-w-full text-sm">
               <thead>
                 <tr className="border-b border-violet-100 bg-violet-50">
-                  {COLS.map((col) => (
-                    <th
-                      key={col}
-                      className={`px-4 py-3 text-xs font-semibold uppercase tracking-wide text-violet-600 whitespace-nowrap ${
-                        col === "Orders" || col === "Total Spent" ? "text-right" : "text-left"
-                      }`}
-                    >
-                      {col}
-                    </th>
-                  ))}
+                  <SortTh label="Name" field="name" sort={sort} onSort={toggleSort} />
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-violet-600 whitespace-nowrap">
+                    Email
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-violet-600 whitespace-nowrap">
+                    Phone
+                  </th>
+                  <SortTh label="Orders" field="total_orders" sort={sort} onSort={toggleSort} align="right" />
+                  <SortTh label="Total Spent" field="total_spent" sort={sort} onSort={toggleSort} align="right" />
+                  <SortTh label="Last Order" field="last_order_date" sort={sort} onSort={toggleSort} />
+                  <SortTh label="Joined" field="created_at" sort={sort} onSort={toggleSort} />
+                  <th className="px-4 py-3" />
                 </tr>
               </thead>
               <tbody>
@@ -113,10 +194,11 @@ export default function Customers() {
 
                 {/* Rows */}
                 {!isLoading &&
-                  filtered.map((c) => (
+                  sorted.map((c) => (
                     <tr
                       key={c.id}
-                      className="border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors"
+                      onClick={() => setSelectedCustomer(c)}
+                      className="border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors cursor-pointer"
                     >
                       <td className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap">
                         {c.name}
@@ -125,6 +207,7 @@ export default function Customers() {
                         {c.email ? (
                           <a
                             href={`mailto:${c.email}`}
+                            onClick={(e) => e.stopPropagation()}
                             className="hover:text-blue-600 hover:underline"
                           >
                             {c.email}
@@ -137,6 +220,7 @@ export default function Customers() {
                         {c.phone ? (
                           <a
                             href={`tel:${c.phone}`}
+                            onClick={(e) => e.stopPropagation()}
                             className="hover:text-blue-600 hover:underline"
                           >
                             {c.phone}
@@ -160,14 +244,14 @@ export default function Customers() {
                       <td className="px-4 py-3">
                         <div className="flex items-center justify-end gap-1">
                           <button
-                            onClick={() => openEdit(c)}
+                            onClick={(e) => openEdit(e, c)}
                             aria-label={`Edit ${c.name}`}
                             className="rounded-md p-1.5 text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
                           >
                             <Pencil size={14} />
                           </button>
                           <button
-                            onClick={() => setDeleteTarget(c)}
+                            onClick={(e) => openDelete(e, c)}
                             aria-label={`Delete ${c.name}`}
                             className="rounded-md p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors"
                           >
@@ -182,7 +266,7 @@ export default function Customers() {
           </div>
 
           {/* Empty state — inside the table card */}
-          {!isLoading && filtered.length === 0 && (
+          {!isLoading && sorted.length === 0 && (
             <div className="flex flex-col items-center justify-center py-16 text-center">
               <Users size={40} className="text-gray-300 mb-3" />
               {search ? (
@@ -203,7 +287,11 @@ export default function Customers() {
         </div>
       )}
 
-      {/* Modals */}
+      {/* Drawer + Modals */}
+      <CustomerDrawer
+        customer={selectedCustomer}
+        onClose={() => setSelectedCustomer(null)}
+      />
       <CustomerModal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
