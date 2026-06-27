@@ -1,131 +1,109 @@
 # Commercio
 
-A **merchant operating system** — a unified back-office dashboard that consolidates
-four commerce modules (**Products/Inventory, Customers, Orders, Analytics**) for a
-single merchant business, with **LLM-driven inventory analysis and sales
-summarization**.
+A **merchant operating system** — a unified back-office dashboard for products, inventory, customers, orders, and analytics, with LLM-powered inventory analysis and sales summarization.
 
-See [SPEC.md](SPEC.md) for the full product specification.
+**[Live Demo →](https://commercio-7tc55cin1-gurnoor.vercel.app)**
 
-> **Status:** scaffold. The project structure, tooling, and wiring are in place.
-> Business features are implemented in later phases.
+---
+
+## Features
+
+- **Products & Inventory** — full CRUD with SKU tracking, cost/price/margin fields, reorder thresholds, and oversell prevention
+- **Orders** — 4-state lifecycle (`PENDING → PROCESSING → COMPLETED / CANCELLED`) with automatic inventory deduction and restock on cancellation
+- **Customers** — CRM-lite with computed spend and order history
+- **Analytics** — revenue KPIs, profit/margin, revenue-over-time chart, top products, low-stock table
+- **AI Insights** — on-demand inventory analysis and sales summarization via Mistral, with Pydantic-validated structured outputs
 
 ## Tech stack
 
-| Layer    | Technology |
-|----------|------------|
-| Frontend | React + TypeScript, Vite, Tailwind CSS + shadcn/ui, Recharts, React Router, React Query, Clerk |
-| Backend  | FastAPI, SQLAlchemy + Alembic, Pydantic, Clerk JWT verification |
-| Database | PostgreSQL |
-| LLM      | OpenRouter (free models, with fallback list) |
+| Layer | Technology |
+|-------|------------|
+| Frontend | React 18 + TypeScript, Vite, Tailwind CSS, shadcn/ui, Recharts, React Router v6, React Query |
+| Backend | FastAPI, SQLAlchemy ORM, Alembic, Pydantic v2 |
+| Database | PostgreSQL (Neon) |
+| Auth | Clerk (JWT verified on every API request) |
+| LLM | Mistral API |
+| Deployment | Render (backend) + Vercel (frontend) |
 
-## Repository layout
+## Screenshots
 
-```
-.
-├── SPEC.md                 # Full product specification
-├── docker-compose.yml      # Postgres + backend + frontend
-├── backend/                # FastAPI app
-│   ├── app/
-│   │   ├── main.py         # App entrypoint + router wiring
-│   │   ├── config.py       # Env-based settings
-│   │   ├── database.py     # SQLAlchemy engine/session/base
-│   │   ├── core/auth.py    # Clerk JWT verification dependency
-│   │   ├── routers/        # products, customers, orders, analytics, ai
-│   │   ├── models/         # ORM models (later phase)
-│   │   ├── schemas/        # Pydantic schemas (later phase)
-│   │   └── seed.py         # Demo data seeder (later phase)
-│   └── alembic/            # Migrations
-└── frontend/               # Vite + React + TS app
-    └── src/
-        ├── main.tsx        # Providers: Clerk, React Query, Router
-        ├── App.tsx         # Routes
-        ├── components/     # Layout + shared UI
-        ├── pages/          # Dashboard, Products, Orders, Customers, Analytics
-        └── lib/            # api client, query client
-```
+> Add screenshots here after deploying — replace the paths below.
 
-## Quick start (Docker Compose)
+| Dashboard | Products |
+|-----------|----------|
+| ![Dashboard](docs/screenshots/dashboard.png) | ![Products](docs/screenshots/products.png) |
 
-The fastest way to run the whole stack locally.
+| Orders | Analytics |
+|--------|-----------|
+| ![Orders](docs/screenshots/orders.png) | ![Analytics](docs/screenshots/analytics.png) |
 
-1. Create the env files from the examples:
+| AI Insights |
+|-------------|
+| ![AI Insights](docs/screenshots/ai.png) |
 
-   ```bash
-   cp backend/.env.example backend/.env
-   cp frontend/.env.example frontend/.env
-   ```
+## Local development
 
-2. Bring everything up:
+### Prerequisites
 
-   ```bash
-   docker compose up --build
-   ```
-
-3. Open the apps:
-
-   - Frontend: http://localhost:5173
-   - API docs (Swagger): http://localhost:8000/docs
-   - API health check: http://localhost:8000/health
-
-> Auth is disabled by default (`AUTH_DISABLED=true` in `backend/.env`) and the
-> frontend runs without Clerk until you add `VITE_CLERK_PUBLISHABLE_KEY`, so the
-> scaffold runs out of the box. Add your Clerk and OpenRouter keys to the `.env`
-> files when you're ready to enable auth and AI features.
-
-## Running without Docker (local dev)
+- Python 3.11+
+- Node.js 20+
+- PostgreSQL (local or a free [Neon](https://neon.tech) database)
 
 ### Backend
 
 ```bash
 cd backend
 python -m venv .venv
-source .venv/bin/activate        # Windows: .venv\Scripts\Activate.ps1
+.venv\Scripts\Activate.ps1        # Windows
+# source .venv/bin/activate        # macOS/Linux
 pip install -r requirements.txt
-cp .env.example .env             # then point DATABASE_URL at your Postgres
+cp .env.example .env               # fill in DATABASE_URL and other keys
+alembic upgrade head               # run migrations
+python -m app.seed                 # seed demo data (optional)
 uvicorn app.main:app --reload
 ```
 
-Database migrations (once models exist):
-
-```bash
-alembic revision --autogenerate -m "message"
-alembic upgrade head
-```
-
-Seed demo data (later phase):
-
-```bash
-python -m app.seed
-```
+API + Swagger docs: http://localhost:8000/docs
 
 ### Frontend
 
 ```bash
 cd frontend
 npm install
-cp .env.example .env
+cp .env.example .env               # set VITE_API_BASE_URL=http://localhost:8000
 npm run dev
 ```
+
+App: http://localhost:5173
 
 ## Environment variables
 
 ### `backend/.env`
 
-| Variable             | Purpose                                            |
-|----------------------|----------------------------------------------------|
-| `DATABASE_URL`       | PostgreSQL connection string                       |
-| `CLERK_JWKS_URL`     | Clerk JWKS endpoint for token verification         |
-| `CLERK_ISSUER`       | Expected token issuer                              |
-| `CLERK_AUDIENCE`     | Expected audience claim (optional)                 |
-| `AUTH_DISABLED`      | `true` to bypass auth in local dev                 |
-| `OPENROUTER_API_KEY` | OpenRouter API key                                 |
-| `OPENROUTER_MODELS`  | Comma-separated free-model fallback list           |
-| `CORS_ORIGINS`       | Allowed frontend origins                           |
+| Variable | Purpose |
+|----------|---------|
+| `DATABASE_URL` | PostgreSQL connection string |
+| `CLERK_JWKS_URL` | Clerk JWKS endpoint for JWT verification |
+| `CLERK_ISSUER` | Expected token issuer |
+| `CLERK_AUDIENCE` | Expected audience claim (optional) |
+| `AUTH_DISABLED` | `true` to skip auth in local dev |
+| `MISTRAL_API_KEY` | Mistral API key |
+| `MISTRAL_MODEL` | Model name (default: `mistral-small-latest`) |
+| `CORS_ORIGINS` | Comma-separated allowed frontend origins |
 
 ### `frontend/.env`
 
-| Variable                      | Purpose                          |
-|-------------------------------|----------------------------------|
-| `VITE_CLERK_PUBLISHABLE_KEY`  | Clerk publishable key            |
-| `VITE_API_BASE_URL`           | Base URL of the Commercio API    |
+| Variable | Purpose |
+|----------|---------|
+| `VITE_API_BASE_URL` | Backend API base URL |
+| `VITE_CLERK_PUBLISHABLE_KEY` | Clerk publishable key |
+
+## Deployment
+
+| Service | What runs there |
+|---------|----------------|
+| [Render](https://render.com) | FastAPI backend (free tier, Docker) |
+| [Vercel](https://vercel.com) | React frontend (free tier) |
+| [Neon](https://neon.tech) | PostgreSQL database (free tier, no expiry) |
+
+The `render.yaml` at the repo root is a Render Blueprint — connect your repo in Render and it configures the backend service automatically.

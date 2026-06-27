@@ -15,6 +15,9 @@ dist/
 dist-ssr/
 *.local
 .vite/
+*.tsbuildinfo
+vite.config.js
+vite.config.d.ts
 
 # ---- Env / secrets ----
 .env
@@ -26,9 +29,6 @@ dist-ssr/
 .idea/
 .DS_Store
 Thumbs.db
-
-# ---- Docker / data ----
-postgres-data/
 
 # ---- Claude Code ----
 .claude/
