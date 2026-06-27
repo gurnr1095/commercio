@@ -4,7 +4,6 @@ services:
     runtime: docker
     dockerfilePath: ./backend/Dockerfile
     dockerContext: ./backend
-    dockerBuildTarget: prod
     plan: free
     preDeployCommand: alembic upgrade head
     envVars:
