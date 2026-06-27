@@ -53,7 +53,7 @@ function SortTh({
   return (
     <th
       onClick={() => onSort(field)}
-      className={`px-4 py-3 text-xs font-semibold uppercase tracking-wide text-violet-600 whitespace-nowrap cursor-pointer select-none hover:text-violet-800 ${align === "right" ? "text-right" : "text-left"}`}
+      className={`px-4 py-3 text-xs font-semibold uppercase tracking-wide text-violet-400 whitespace-nowrap cursor-pointer select-none hover:text-violet-300 ${align === "right" ? "text-right" : "text-left"}`}
     >
       <span className={`inline-flex items-center gap-0.5 ${align === "right" ? "flex-row-reverse" : ""}`}>
         {label}
@@ -118,7 +118,6 @@ export default function Orders() {
     }
   });
 
-  // Keep drawer in sync when the order is updated via status transitions
   const liveSelected = selectedOrder
     ? (orders?.find((o) => o.id === selectedOrder.id) ?? selectedOrder)
     : null;
@@ -128,9 +127,9 @@ export default function Orders() {
       {/* Header */}
       <div className="flex items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Orders</h1>
+          <h1 className="text-2xl font-semibold tracking-tight text-zinc-100">Orders</h1>
           {orders && (
-            <p className="text-sm text-gray-500 mt-0.5">{orders.length} orders total</p>
+            <p className="text-sm text-zinc-400 mt-0.5">{orders.length} orders total</p>
           )}
         </div>
         <Button onClick={() => setCreateOpen(true)}>
@@ -140,15 +139,15 @@ export default function Orders() {
       </div>
 
       {/* Status filter tabs */}
-      <div className="flex items-center gap-1 border-b border-gray-200">
+      <div className="flex items-center gap-1 border-b border-zinc-800">
         {TABS.map((tab) => (
           <button
             key={tab.value}
             onClick={() => setActiveTab(tab.value)}
             className={`flex items-center gap-1.5 px-3 py-2 text-sm font-medium border-b-2 -mb-px transition-colors ${
               activeTab === tab.value
-                ? "border-violet-600 text-violet-700"
-                : "border-transparent text-gray-500 hover:text-gray-700"
+                ? "border-violet-500 text-violet-400"
+                : "border-transparent text-zinc-500 hover:text-zinc-300"
             }`}
           >
             {tab.label}
@@ -157,7 +156,7 @@ export default function Orders() {
                 className={`text-xs rounded-full px-1.5 py-0.5 ${
                   activeTab === tab.value
                     ? "bg-violet-600 text-white"
-                    : "bg-gray-100 text-gray-500"
+                    : "bg-zinc-800 text-zinc-500"
                 }`}
               >
                 {counts[tab.value]}
@@ -169,7 +168,7 @@ export default function Orders() {
 
       {/* Search */}
       <div className="relative max-w-sm">
-        <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+        <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" />
         <Input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
@@ -180,21 +179,21 @@ export default function Orders() {
 
       {/* Error */}
       {isError && (
-        <div className="rounded-lg border border-red-200 bg-red-50 p-6 text-sm text-red-600">
+        <div className="rounded-lg border border-red-900/50 bg-red-950/50 p-6 text-sm text-red-400">
           Failed to load orders. Make sure the backend is running.
         </div>
       )}
 
       {/* Table */}
       {!isError && (
-        <div className="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
+        <div className="rounded-xl border border-zinc-800 bg-zinc-900 shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full text-sm">
               <thead>
-                <tr className="border-b border-violet-100 bg-violet-50">
+                <tr className="border-b border-violet-900/50 bg-violet-950/40">
                   <SortTh label="Order" field="id" sort={sort} onSort={toggleSort} />
                   <SortTh label="Customer" field="customer_name" sort={sort} onSort={toggleSort} />
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-violet-600 whitespace-nowrap">
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-violet-400 whitespace-nowrap">
                     Status
                   </th>
                   <SortTh label="Items" field="items" sort={sort} onSort={toggleSort} align="right" />
@@ -207,11 +206,11 @@ export default function Orders() {
                 {/* Loading skeletons */}
                 {isLoading &&
                   Array.from({ length: 6 }).map((_, i) => (
-                    <tr key={i} className="border-b border-gray-100">
+                    <tr key={i} className="border-b border-zinc-800">
                       {[20, 50, 30, 15, 25, 40, 15].map((w, j) => (
                         <td key={j} className="px-4 py-3">
                           <div
-                            className="h-4 rounded bg-gray-100 animate-pulse"
+                            className="h-4 rounded bg-zinc-800 animate-pulse"
                             style={{ width: `${w}%` }}
                           />
                         </td>
@@ -227,28 +226,28 @@ export default function Orders() {
                       <tr
                         key={order.id}
                         onClick={() => setSelectedOrder(order)}
-                        className="border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors cursor-pointer"
+                        className="border-b border-zinc-800 last:border-0 hover:bg-zinc-800/50 transition-colors cursor-pointer"
                       >
-                        <td className="px-4 py-3 font-mono text-sm text-gray-700 whitespace-nowrap">
+                        <td className="px-4 py-3 font-mono text-sm text-zinc-400 whitespace-nowrap">
                           #{order.id}
                         </td>
-                        <td className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap">
+                        <td className="px-4 py-3 font-medium text-zinc-100 whitespace-nowrap">
                           {order.customer_name}
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap">
                           <Badge variant={badge.variant}>{badge.label}</Badge>
                         </td>
-                        <td className="px-4 py-3 text-right text-gray-600 tabular-nums">
+                        <td className="px-4 py-3 text-right text-zinc-400 tabular-nums">
                           {order.items.length}
                         </td>
-                        <td className="px-4 py-3 text-right font-medium text-gray-900 tabular-nums whitespace-nowrap">
+                        <td className="px-4 py-3 text-right font-medium text-zinc-100 tabular-nums whitespace-nowrap">
                           {formatMoney(order.total)}
                         </td>
-                        <td className="px-4 py-3 text-gray-500 whitespace-nowrap">
+                        <td className="px-4 py-3 text-zinc-400 whitespace-nowrap">
                           {formatDate(order.created_at)}
                         </td>
                         <td className="px-4 py-3 text-right">
-                          <span className="text-xs text-gray-400 hover:text-gray-600">View →</span>
+                          <span className="text-xs text-zinc-600 hover:text-zinc-400">View →</span>
                         </td>
                       </tr>
                     );
@@ -260,13 +259,13 @@ export default function Orders() {
           {/* Empty state */}
           {!isLoading && sorted.length === 0 && (
             <div className="flex flex-col items-center justify-center py-16 text-center">
-              <ShoppingCart size={40} className="text-gray-300 mb-3" />
+              <ShoppingCart size={40} className="text-zinc-700 mb-3" />
               {search || activeTab !== "ALL" ? (
-                <p className="text-sm text-gray-500">No orders match the current filter.</p>
+                <p className="text-sm text-zinc-500">No orders match the current filter.</p>
               ) : (
                 <>
-                  <p className="text-sm font-medium text-gray-700">No orders yet</p>
-                  <p className="text-sm text-gray-400 mt-1">
+                  <p className="text-sm font-medium text-zinc-300">No orders yet</p>
+                  <p className="text-sm text-zinc-500 mt-1">
                     Create your first order to get started.
                   </p>
                   <Button className="mt-4" onClick={() => setCreateOpen(true)}>

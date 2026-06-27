@@ -18,14 +18,14 @@ function SectionCard({
   children: React.ReactNode;
 }) {
   return (
-    <div className="bg-white rounded-xl border border-gray-200 shadow-sm">
-      <div className="flex items-start gap-3 px-6 py-5 border-b border-gray-100">
-        <div className="p-2 rounded-lg bg-violet-50 text-violet-600 shrink-0">
+    <div className="bg-zinc-900 rounded-xl border border-zinc-800 shadow-sm">
+      <div className="flex items-start gap-3 px-6 py-5 border-b border-zinc-800">
+        <div className="p-2 rounded-lg bg-violet-950/40 text-violet-400 shrink-0">
           <Icon size={16} />
         </div>
         <div>
-          <h2 className="text-sm font-semibold text-gray-900">{title}</h2>
-          {description && <p className="text-xs text-gray-500 mt-0.5">{description}</p>}
+          <h2 className="text-sm font-semibold text-zinc-100">{title}</h2>
+          {description && <p className="text-xs text-zinc-400 mt-0.5">{description}</p>}
         </div>
       </div>
       <div className="px-6 py-5">{children}</div>
@@ -36,7 +36,7 @@ function SectionCard({
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-4">
-      <label className="text-sm font-medium text-gray-700 w-36 shrink-0">{label}</label>
+      <label className="text-sm font-medium text-zinc-300 w-36 shrink-0">{label}</label>
       <div className="flex-1">{children}</div>
     </div>
   );
@@ -91,9 +91,9 @@ function AccountSection() {
         title="Account"
         description="Clerk authentication is not configured."
       >
-        <p className="text-sm text-gray-500">
-          Set <code className="text-xs bg-gray-100 px-1.5 py-0.5 rounded font-mono">VITE_CLERK_PUBLISHABLE_KEY</code> in{" "}
-          <code className="text-xs bg-gray-100 px-1.5 py-0.5 rounded font-mono">frontend/.env</code> to enable auth.
+        <p className="text-sm text-zinc-400">
+          Set <code className="text-xs bg-zinc-800 px-1.5 py-0.5 rounded font-mono text-zinc-300">VITE_CLERK_PUBLISHABLE_KEY</code> in{" "}
+          <code className="text-xs bg-zinc-800 px-1.5 py-0.5 rounded font-mono text-zinc-300">frontend/.env</code> to enable auth.
         </p>
       </SectionCard>
     );
@@ -109,10 +109,10 @@ function AccountSection() {
         {isLoaded && user && (
           <div className="space-y-2">
             <Field label="Name">
-              <p className="text-sm text-gray-800">{user.fullName ?? "—"}</p>
+              <p className="text-sm text-zinc-200">{user.fullName ?? "—"}</p>
             </Field>
             <Field label="Email">
-              <p className="text-sm text-gray-800">
+              <p className="text-sm text-zinc-200">
                 {user.primaryEmailAddress?.emailAddress ?? "—"}
               </p>
             </Field>
@@ -122,7 +122,7 @@ function AccountSection() {
           <Button
             size="sm"
             variant="outline"
-            className="text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700"
+            className="text-red-400 border-red-900/50 hover:bg-red-950/50 hover:text-red-300 hover:border-red-800"
             onClick={() => signOut()}
           >
             <LogOut size={14} />
@@ -141,18 +141,18 @@ function AiSection() {
       title="AI / LLM"
       description="OpenRouter configuration for inventory analysis and sales summaries."
     >
-      <div className="space-y-3 text-sm text-gray-600">
+      <div className="space-y-3 text-sm text-zinc-400">
         <p>
-          AI features use <strong>OpenRouter</strong> with free models. Configure the API key and
-          model fallback list in <code className="text-xs bg-gray-100 px-1.5 py-0.5 rounded font-mono">backend/.env</code>:
+          AI features use <strong className="text-zinc-200">OpenRouter</strong> with free models. Configure the API key and
+          model fallback list in <code className="text-xs bg-zinc-800 px-1.5 py-0.5 rounded font-mono text-zinc-300">backend/.env</code>:
         </p>
-        <div className="bg-gray-50 rounded-lg border border-gray-200 p-3 font-mono text-xs text-gray-700 space-y-1">
+        <div className="bg-zinc-800 rounded-lg border border-zinc-700 p-3 font-mono text-xs text-zinc-300 space-y-1">
           <p>OPENROUTER_API_KEY=sk-or-v1-…</p>
           <p>OPENROUTER_MODELS=model-1:free,model-2:free</p>
         </div>
-        <p className="text-xs text-gray-400">
+        <p className="text-xs text-zinc-500">
           Models are tried in order — if the first fails or rate-limits, the next is used automatically.
-          Visit <strong>openrouter.ai/models</strong> and filter by "Free" to find available model slugs.
+          Visit <strong className="text-zinc-400">openrouter.ai/models</strong> and filter by "Free" to find available model slugs.
         </p>
       </div>
     </SectionCard>
@@ -163,8 +163,8 @@ export default function Settings() {
   return (
     <div className="space-y-6 max-w-2xl">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Settings</h1>
-        <p className="text-sm text-gray-400 mt-0.5">Manage your store and account preferences</p>
+        <h1 className="text-2xl font-semibold tracking-tight text-zinc-100">Settings</h1>
+        <p className="text-sm text-zinc-500 mt-0.5">Manage your store and account preferences</p>
       </div>
 
       <StoreSection />

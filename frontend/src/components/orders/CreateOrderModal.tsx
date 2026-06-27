@@ -120,7 +120,7 @@ export default function CreateOrderModal({ open, onClose }: Props) {
                 id="o-customer"
                 value={customerId}
                 onChange={(e) => setCustomerId(e.target.value)}
-                className="flex h-9 w-full rounded-md border border-gray-300 bg-white px-3 text-sm focus:outline-none focus:ring-2 focus:ring-violet-600 focus:border-transparent"
+                className="flex h-9 w-full rounded-md border border-zinc-700 bg-zinc-800 text-zinc-100 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
               >
                 <option value="">Select a customer…</option>
                 {(customers ?? []).map((c) => (
@@ -142,7 +142,7 @@ export default function CreateOrderModal({ open, onClose }: Props) {
                       <select
                         value={item.product_id}
                         onChange={(e) => updateLine(index, "product_id", e.target.value)}
-                        className="flex-1 h-9 rounded-md border border-gray-300 bg-white px-3 text-sm focus:outline-none focus:ring-2 focus:ring-violet-600"
+                        className="flex-1 h-9 rounded-md border border-zinc-700 bg-zinc-800 text-zinc-100 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
                       >
                         <option value="">Select product…</option>
                         {availableProducts(item.product_id).map((p) => (
@@ -164,7 +164,7 @@ export default function CreateOrderModal({ open, onClose }: Props) {
                         <button
                           type="button"
                           onClick={() => removeLine(index)}
-                          className="rounded-md p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors"
+                          className="rounded-md p-1.5 text-zinc-500 hover:text-red-400 hover:bg-red-950/50 transition-colors"
                         >
                           <Trash2 size={14} />
                         </button>
@@ -176,7 +176,7 @@ export default function CreateOrderModal({ open, onClose }: Props) {
               <button
                 type="button"
                 onClick={addLine}
-                className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors self-start"
+                className="flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-100 transition-colors self-start"
               >
                 <Plus size={14} />
                 Add item
@@ -185,14 +185,14 @@ export default function CreateOrderModal({ open, onClose }: Props) {
 
             {/* Running total */}
             {runningTotal > 0 && (
-              <div className="flex justify-between items-center pt-2 border-t border-gray-100">
-                <span className="text-sm text-gray-500">Estimated total</span>
-                <span className="font-semibold text-gray-900">{formatMoney(runningTotal)}</span>
+              <div className="flex justify-between items-center pt-2 border-t border-zinc-800">
+                <span className="text-sm text-zinc-500">Estimated total</span>
+                <span className="font-semibold text-zinc-100">{formatMoney(runningTotal)}</span>
               </div>
             )}
 
             {error && (
-              <p className="text-sm text-red-600 bg-red-50 rounded-md px-3 py-2">{error}</p>
+              <p className="text-sm text-red-400 bg-red-950/50 border border-red-900/50 rounded-md px-3 py-2">{error}</p>
             )}
           </DialogBody>
 

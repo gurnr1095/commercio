@@ -130,7 +130,7 @@ export default function CustomerModal({ open, onClose, customer }: Props) {
             </div>
 
             {error && (
-              <p role="alert" className="text-sm text-red-600 bg-red-50 rounded-md px-3 py-2">{error}</p>
+              <p role="alert" className="text-sm text-red-400 bg-red-950/50 border border-red-900/50 rounded-md px-3 py-2">{error}</p>
             )}
           </DialogBody>
 

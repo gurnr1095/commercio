@@ -30,20 +30,20 @@ const STATUS_COLORS: Record<string, string> = {
 };
 
 const STATUS_BG: Record<string, string> = {
-  PENDING: "bg-amber-50 text-amber-700 ring-amber-200",
-  PROCESSING: "bg-blue-50 text-blue-700 ring-blue-200",
-  COMPLETED: "bg-green-50 text-green-700 ring-green-200",
-  CANCELLED: "bg-gray-100 text-gray-500 ring-gray-200",
+  PENDING: "bg-amber-950/50 text-amber-400 ring-amber-800",
+  PROCESSING: "bg-blue-950/50 text-blue-400 ring-blue-800",
+  COMPLETED: "bg-green-950/50 text-green-400 ring-green-800",
+  CANCELLED: "bg-zinc-800 text-zinc-400 ring-zinc-700",
 };
 
 function StatusBadge({ status }: { status: string }) {
   return (
     <span
-      className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium ring-1 ring-inset ${STATUS_BG[status] ?? "bg-gray-100 text-gray-500 ring-gray-200"}`}
+      className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium ring-1 ring-inset ${STATUS_BG[status] ?? "bg-zinc-800 text-zinc-400 ring-zinc-700"}`}
     >
       <span
         className="w-1.5 h-1.5 rounded-full"
-        style={{ backgroundColor: STATUS_COLORS[status] ?? "#9ca3af" }}
+        style={{ backgroundColor: STATUS_COLORS[status] ?? "#71717a" }}
       />
       {status.charAt(0) + status.slice(1).toLowerCase()}
     </span>
@@ -64,19 +64,19 @@ type KpiProps = {
 function KpiCard({ title, value, sub, icon: Icon, iconBg, highlight }: KpiProps) {
   return (
     <div
-      className={`bg-white rounded-xl border shadow-sm p-5 ${highlight ? "border-amber-300" : "border-gray-200"}`}
+      className={`bg-zinc-900 rounded-xl border shadow-sm p-5 ${highlight ? "border-amber-700" : "border-zinc-800"}`}
     >
       <div className="flex items-center justify-between mb-3">
-        <span className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+        <span className="text-xs font-semibold uppercase tracking-wide text-zinc-400">
           {title}
         </span>
         <div className={`p-2 rounded-lg ${iconBg}`}>
           <Icon size={14} />
         </div>
       </div>
-      <p className="text-2xl font-bold text-gray-900 tabular-nums">{value}</p>
+      <p className="text-2xl font-bold text-zinc-100 tabular-nums">{value}</p>
       {sub && (
-        <p className={`text-xs mt-1 ${highlight ? "text-amber-600 font-medium" : "text-gray-400"}`}>
+        <p className={`text-xs mt-1 ${highlight ? "text-amber-400 font-medium" : "text-zinc-500"}`}>
           {sub}
         </p>
       )}
@@ -86,10 +86,10 @@ function KpiCard({ title, value, sub, icon: Icon, iconBg, highlight }: KpiProps)
 
 function SkeletonKpi() {
   return (
-    <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 space-y-3">
-      <div className="h-3 w-24 bg-gray-100 rounded animate-pulse" />
-      <div className="h-7 w-32 bg-gray-100 rounded animate-pulse" />
-      <div className="h-3 w-20 bg-gray-100 rounded animate-pulse" />
+    <div className="bg-zinc-900 rounded-xl border border-zinc-800 shadow-sm p-5 space-y-3">
+      <div className="h-3 w-24 bg-zinc-800 rounded animate-pulse" />
+      <div className="h-7 w-32 bg-zinc-800 rounded animate-pulse" />
+      <div className="h-3 w-20 bg-zinc-800 rounded animate-pulse" />
     </div>
   );
 }
@@ -106,8 +106,8 @@ function SectionCard({
   className?: string;
 }) {
   return (
-    <div className={`bg-white rounded-xl border border-gray-200 shadow-sm p-5 ${className}`}>
-      <h2 className="text-sm font-semibold text-gray-700 mb-4">{title}</h2>
+    <div className={`bg-zinc-900 rounded-xl border border-zinc-800 shadow-sm p-5 ${className}`}>
+      <h2 className="text-sm font-semibold text-zinc-300 mb-4">{title}</h2>
       {children}
     </div>
   );
@@ -122,11 +122,11 @@ function RecentOrders({ orders, isLoading }: { orders: Order[] | undefined; isLo
         <div className="space-y-3">
           {Array.from({ length: 5 }).map((_, i) => (
             <div key={i} className="flex items-center gap-3">
-              <div className="h-4 w-20 bg-gray-100 rounded animate-pulse" />
-              <div className="h-4 flex-1 bg-gray-100 rounded animate-pulse" />
-              <div className="h-5 w-24 bg-gray-100 rounded-full animate-pulse" />
-              <div className="h-4 w-16 bg-gray-100 rounded animate-pulse" />
-              <div className="h-4 w-20 bg-gray-100 rounded animate-pulse" />
+              <div className="h-4 w-20 bg-zinc-800 rounded animate-pulse" />
+              <div className="h-4 flex-1 bg-zinc-800 rounded animate-pulse" />
+              <div className="h-5 w-24 bg-zinc-800 rounded-full animate-pulse" />
+              <div className="h-4 w-16 bg-zinc-800 rounded animate-pulse" />
+              <div className="h-4 w-20 bg-zinc-800 rounded animate-pulse" />
             </div>
           ))}
         </div>
@@ -141,45 +141,45 @@ function RecentOrders({ orders, isLoading }: { orders: Order[] | undefined; isLo
   return (
     <SectionCard title="Recent Orders">
       {recent.length === 0 ? (
-        <p className="text-sm text-gray-400 py-6 text-center">No orders yet.</p>
+        <p className="text-sm text-zinc-500 py-6 text-center">No orders yet.</p>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-100">
-                <th className="pb-2 text-left text-xs font-semibold text-gray-400 uppercase tracking-wide">
+              <tr className="border-b border-zinc-800">
+                <th className="pb-2 text-left text-xs font-semibold text-zinc-500 uppercase tracking-wide">
                   Order
                 </th>
-                <th className="pb-2 text-left text-xs font-semibold text-gray-400 uppercase tracking-wide">
+                <th className="pb-2 text-left text-xs font-semibold text-zinc-500 uppercase tracking-wide">
                   Customer
                 </th>
-                <th className="pb-2 text-left text-xs font-semibold text-gray-400 uppercase tracking-wide">
+                <th className="pb-2 text-left text-xs font-semibold text-zinc-500 uppercase tracking-wide">
                   Status
                 </th>
-                <th className="pb-2 text-right text-xs font-semibold text-gray-400 uppercase tracking-wide">
+                <th className="pb-2 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wide">
                   Total
                 </th>
-                <th className="pb-2 text-right text-xs font-semibold text-gray-400 uppercase tracking-wide">
+                <th className="pb-2 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wide">
                   Date
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-50">
+            <tbody className="divide-y divide-zinc-800">
               {recent.map((order) => (
-                <tr key={order.id} className="hover:bg-gray-50 transition-colors">
-                  <td className="py-2.5 pr-4 font-mono text-xs text-gray-500">
+                <tr key={order.id} className="hover:bg-zinc-800/50 transition-colors">
+                  <td className="py-2.5 pr-4 font-mono text-xs text-zinc-500">
                     #{String(order.id).padStart(5, "0")}
                   </td>
-                  <td className="py-2.5 pr-4 text-gray-800 font-medium truncate max-w-[140px]">
+                  <td className="py-2.5 pr-4 text-zinc-200 font-medium truncate max-w-[140px]">
                     {order.customer_name}
                   </td>
                   <td className="py-2.5 pr-4">
                     <StatusBadge status={order.status} />
                   </td>
-                  <td className="py-2.5 pr-4 text-right text-gray-800 tabular-nums font-medium">
+                  <td className="py-2.5 pr-4 text-right text-zinc-200 tabular-nums font-medium">
                     {formatMoney(order.total)}
                   </td>
-                  <td className="py-2.5 text-right text-gray-400 tabular-nums">
+                  <td className="py-2.5 text-right text-zinc-500 tabular-nums">
                     {formatDate(order.created_at)}
                   </td>
                 </tr>
@@ -207,8 +207,8 @@ function LowStockAlerts({
         <div className="space-y-2.5">
           {Array.from({ length: 4 }).map((_, i) => (
             <div key={i} className="flex items-center justify-between gap-2">
-              <div className="h-4 flex-1 bg-gray-100 rounded animate-pulse" />
-              <div className="h-5 w-10 bg-gray-100 rounded animate-pulse" />
+              <div className="h-4 flex-1 bg-zinc-800 rounded animate-pulse" />
+              <div className="h-5 w-10 bg-zinc-800 rounded animate-pulse" />
             </div>
           ))}
         </div>
@@ -224,11 +224,11 @@ function LowStockAlerts({
     <SectionCard title="Low Stock Alerts">
       {lowStock.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-6 gap-2 text-center">
-          <Package size={28} className="text-green-400" />
-          <p className="text-sm text-gray-400">All stocked up</p>
+          <Package size={28} className="text-green-500" />
+          <p className="text-sm text-zinc-500">All stocked up</p>
         </div>
       ) : (
-        <ul className="space-y-0 divide-y divide-gray-50">
+        <ul className="space-y-0 divide-y divide-zinc-800">
           {lowStock.map((product) => {
             const isOut = product.stock_quantity === 0;
             return (
@@ -237,14 +237,14 @@ function LowStockAlerts({
                   <span
                     className={`shrink-0 w-1.5 h-1.5 rounded-full ${isOut ? "bg-red-500" : "bg-amber-400"}`}
                   />
-                  <span className="text-sm text-gray-800 truncate">{product.name}</span>
+                  <span className="text-sm text-zinc-200 truncate">{product.name}</span>
                 </div>
                 <div className="shrink-0 text-right">
                   <span
                     className={`text-xs font-semibold tabular-nums px-2 py-0.5 rounded-full ${
                       isOut
-                        ? "bg-red-50 text-red-600"
-                        : "bg-amber-50 text-amber-700"
+                        ? "bg-red-950/50 text-red-400"
+                        : "bg-amber-950/50 text-amber-400"
                     }`}
                   >
                     {product.stock_quantity} / {product.reorder_threshold}
@@ -273,7 +273,7 @@ function RevenueSparkline({
   if (isLoading) {
     return (
       <SectionCard title="Revenue — Last 7 Days">
-        <div className="h-20 bg-gray-50 rounded-lg animate-pulse" />
+        <div className="h-20 bg-zinc-800 rounded-lg animate-pulse" />
       </SectionCard>
     );
   }
@@ -283,7 +283,7 @@ function RevenueSparkline({
   return (
     <SectionCard title="Revenue — Last 7 Days">
       {!hasData ? (
-        <p className="text-sm text-gray-400 py-4 text-center">
+        <p className="text-sm text-zinc-500 py-4 text-center">
           No revenue data yet.
         </p>
       ) : (
@@ -291,8 +291,8 @@ function RevenueSparkline({
           <AreaChart data={last7} margin={{ top: 4, right: 0, left: 0, bottom: 0 }}>
             <defs>
               <linearGradient id="sparkGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#6366f1" stopOpacity={0.2} />
-                <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
+                <stop offset="5%" stopColor="#7c3aed" stopOpacity={0.3} />
+                <stop offset="95%" stopColor="#7c3aed" stopOpacity={0} />
               </linearGradient>
             </defs>
             <Tooltip
@@ -306,14 +306,16 @@ function RevenueSparkline({
               contentStyle={{
                 fontSize: 12,
                 borderRadius: 8,
-                border: "1px solid #e5e7eb",
+                background: "#18181b",
+                border: "1px solid #27272a",
+                color: "#f4f4f5",
               }}
             />
             <XAxis dataKey="date" hide />
             <Area
               type="monotone"
               dataKey="revenue"
-              stroke="#6366f1"
+              stroke="#7c3aed"
               strokeWidth={2}
               fill="url(#sparkGrad)"
               dot={false}
@@ -350,12 +352,12 @@ export default function Dashboard() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">{storeName}</h1>
-        <p className="text-sm text-gray-400 mt-0.5">Your store at a glance</p>
+        <h1 className="text-2xl font-semibold tracking-tight text-zinc-100">{storeName}</h1>
+        <p className="text-sm text-zinc-500 mt-0.5">Your store at a glance</p>
       </div>
 
       {analyticsError && (
-        <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-600">
+        <div className="rounded-lg border border-red-900/50 bg-red-950/50 p-4 text-sm text-red-400">
           Failed to load analytics. Make sure the backend is running.
         </div>
       )}
@@ -371,21 +373,21 @@ export default function Dashboard() {
               value={formatMoney(analytics.total_revenue)}
               sub="From completed orders"
               icon={DollarSign}
-              iconBg="bg-green-100 text-green-600"
+              iconBg="bg-green-950/50 text-green-400"
             />
             <KpiCard
               title="Total Orders"
               value={String(analytics.total_orders)}
               sub={`${analytics.completed_orders} completed`}
               icon={ShoppingCart}
-              iconBg="bg-blue-100 text-blue-600"
+              iconBg="bg-blue-950/50 text-blue-400"
             />
             <KpiCard
               title="Customers"
               value={String(analytics.total_customers)}
               sub={`${analytics.total_products} products`}
               icon={Users}
-              iconBg="bg-purple-100 text-purple-600"
+              iconBg="bg-violet-950/50 text-violet-400"
             />
             <KpiCard
               title="Low Stock"
@@ -400,8 +402,8 @@ export default function Dashboard() {
               icon={analytics.low_stock_count > 0 ? AlertTriangle : Package}
               iconBg={
                 analytics.low_stock_count > 0
-                  ? "bg-amber-100 text-amber-600"
-                  : "bg-gray-100 text-gray-500"
+                  ? "bg-amber-950/50 text-amber-400"
+                  : "bg-zinc-800 text-zinc-500"
               }
               highlight={lowStockHighlight}
             />

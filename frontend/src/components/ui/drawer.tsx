@@ -27,7 +27,7 @@ function DrawerContent({
       <DrawerOverlay />
       <DialogPrimitive.Content
         className={cn(
-          "fixed right-0 top-0 z-50 h-full w-[520px] max-w-full bg-white shadow-2xl",
+          "fixed right-0 top-0 z-50 h-full w-[520px] max-w-full bg-zinc-900 border-l border-zinc-800 shadow-2xl",
           "flex flex-col focus:outline-none",
           className,
         )}
@@ -42,7 +42,7 @@ function DrawerContent({
 function DrawerHeader({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn("flex-none px-6 pt-5 pb-4 border-b border-gray-100", className)}
+      className={cn("flex-none px-6 pt-5 pb-4 border-b border-zinc-800", className)}
       {...props}
     />
   );
@@ -56,7 +56,7 @@ function DrawerFooter({ className, ...props }: React.HTMLAttributes<HTMLDivEleme
   return (
     <div
       className={cn(
-        "flex-none flex items-center justify-end gap-2 px-6 py-4 border-t border-gray-100",
+        "flex-none flex items-center justify-end gap-2 px-6 py-4 border-t border-zinc-800",
         className,
       )}
       {...props}

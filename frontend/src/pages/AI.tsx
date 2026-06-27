@@ -40,12 +40,12 @@ function SectionHeader({
 }) {
   return (
     <div className="flex items-start gap-3 mb-5">
-      <div className="p-2 rounded-lg bg-violet-50 text-violet-600 mt-0.5">
+      <div className="p-2 rounded-lg bg-violet-950/40 text-violet-400 mt-0.5">
         <Icon size={18} />
       </div>
       <div>
-        <h2 className="text-base font-semibold text-gray-900">{title}</h2>
-        <p className="text-sm text-gray-500 mt-0.5">{description}</p>
+        <h2 className="text-base font-semibold text-zinc-100">{title}</h2>
+        <p className="text-sm text-zinc-400 mt-0.5">{description}</p>
       </div>
     </div>
   );
@@ -65,7 +65,7 @@ function GenerateButton({
       onClick={onClick}
       disabled={loading}
       className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg
-        bg-violet-600 text-white hover:bg-violet-700 disabled:opacity-60 disabled:cursor-not-allowed
+        bg-violet-600 text-white hover:bg-violet-500 disabled:opacity-60 disabled:cursor-not-allowed
         transition-colors"
     >
       {loading ? (
@@ -90,7 +90,7 @@ function GenerateButton({
 
 function ErrorBanner({ message }: { message: string }) {
   return (
-    <div className="mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+    <div className="mt-4 rounded-lg border border-red-900/50 bg-red-950/50 px-4 py-3 text-sm text-red-400">
       {message}
     </div>
   );
@@ -99,23 +99,23 @@ function ErrorBanner({ message }: { message: string }) {
 function AlertCard({ alert, variant }: { alert: StockAlert; variant: "critical" | "warning" }) {
   const colors =
     variant === "critical"
-      ? "border-red-200 bg-red-50"
-      : "border-amber-200 bg-amber-50";
+      ? "border-red-900/50 bg-red-950/50"
+      : "border-amber-900/50 bg-amber-950/50";
   const badgeColors =
     variant === "critical"
-      ? "bg-red-100 text-red-700"
-      : "bg-amber-100 text-amber-700";
+      ? "bg-red-950/60 text-red-400"
+      : "bg-amber-950/60 text-amber-400";
 
   return (
     <div className={`rounded-lg border p-3 ${colors}`}>
       <div className="flex items-center justify-between mb-1">
-        <span className="text-sm font-medium text-gray-900">{alert.product_name}</span>
+        <span className="text-sm font-medium text-zinc-100">{alert.product_name}</span>
         <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${badgeColors}`}>
           {alert.current_stock === 0 ? "Out of stock" : `Stock: ${alert.current_stock}`}
         </span>
       </div>
-      <p className="text-xs text-gray-500 mb-1.5">Threshold: {alert.threshold}</p>
-      <p className="text-xs text-gray-700 leading-snug">{alert.recommendation}</p>
+      <p className="text-xs text-zinc-500 mb-1.5">Threshold: {alert.threshold}</p>
+      <p className="text-xs text-zinc-300 leading-snug">{alert.recommendation}</p>
     </div>
   );
 }
@@ -123,20 +123,20 @@ function AlertCard({ alert, variant }: { alert: StockAlert; variant: "critical" 
 function TrendBadge({ trend }: { trend: SalesSummary["trend"] }) {
   if (trend === "growing") {
     return (
-      <span className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-green-100 text-green-700">
+      <span className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-green-950/60 text-green-400">
         <TrendingUp size={12} /> Growing
       </span>
     );
   }
   if (trend === "declining") {
     return (
-      <span className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-red-100 text-red-700">
+      <span className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-red-950/60 text-red-400">
         <TrendingDown size={12} /> Declining
       </span>
     );
   }
   return (
-    <span className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-gray-100 text-gray-600">
+    <span className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-zinc-800 text-zinc-400">
       <Minus size={12} /> Stable
     </span>
   );
@@ -146,15 +146,15 @@ function InventoryResult({ data }: { data: InventoryAnalysis }) {
   return (
     <div className="mt-5 space-y-4">
       {/* Summary */}
-      <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3">
-        <p className="text-sm text-gray-700 leading-relaxed">{data.summary}</p>
+      <div className="rounded-lg border border-zinc-800 bg-zinc-800 px-4 py-3">
+        <p className="text-sm text-zinc-300 leading-relaxed">{data.summary}</p>
       </div>
 
       {/* Critical + Reorder columns */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {data.critical_items.length > 0 && (
           <div>
-            <h4 className="text-xs font-semibold uppercase tracking-wide text-red-600 mb-2 flex items-center gap-1">
+            <h4 className="text-xs font-semibold uppercase tracking-wide text-red-400 mb-2 flex items-center gap-1">
               <AlertTriangle size={11} /> Critical ({data.critical_items.length})
             </h4>
             <div className="space-y-2">
@@ -166,7 +166,7 @@ function InventoryResult({ data }: { data: InventoryAnalysis }) {
         )}
         {data.reorder_recommendations.length > 0 && (
           <div>
-            <h4 className="text-xs font-semibold uppercase tracking-wide text-amber-600 mb-2 flex items-center gap-1">
+            <h4 className="text-xs font-semibold uppercase tracking-wide text-amber-400 mb-2 flex items-center gap-1">
               <AlertTriangle size={11} /> Reorder Soon ({data.reorder_recommendations.length})
             </h4>
             <div className="space-y-2">
@@ -177,7 +177,7 @@ function InventoryResult({ data }: { data: InventoryAnalysis }) {
           </div>
         )}
         {data.critical_items.length === 0 && data.reorder_recommendations.length === 0 && (
-          <div className="col-span-2 text-sm text-green-700 bg-green-50 border border-green-200 rounded-lg px-4 py-3">
+          <div className="col-span-2 text-sm text-green-400 bg-green-950/50 border border-green-900/50 rounded-lg px-4 py-3">
             All products are well-stocked — no immediate action required.
           </div>
         )}
@@ -186,12 +186,12 @@ function InventoryResult({ data }: { data: InventoryAnalysis }) {
       {/* Insights */}
       {data.insights.length > 0 && (
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">
+          <h4 className="text-xs font-semibold uppercase tracking-wide text-zinc-500 mb-2">
             Insights
           </h4>
           <ul className="space-y-1.5">
             {data.insights.map((insight, i) => (
-              <li key={i} className="flex items-start gap-2 text-sm text-gray-700">
+              <li key={i} className="flex items-start gap-2 text-sm text-zinc-300">
                 <span className="mt-1 w-1.5 h-1.5 rounded-full bg-violet-400 shrink-0" />
                 {insight}
               </li>
@@ -207,20 +207,20 @@ function SalesResult({ data }: { data: SalesSummary }) {
   return (
     <div className="mt-5 space-y-4">
       {/* Headline + trend */}
-      <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3">
+      <div className="rounded-lg border border-zinc-800 bg-zinc-800 px-4 py-3">
         <div className="flex items-start justify-between gap-3 mb-2">
-          <p className="text-sm font-semibold text-gray-900 leading-snug">{data.headline}</p>
+          <p className="text-sm font-semibold text-zinc-100 leading-snug">{data.headline}</p>
           <TrendBadge trend={data.trend} />
         </div>
-        <p className="text-sm text-gray-600">{data.total_revenue_insight}</p>
+        <p className="text-sm text-zinc-400">{data.total_revenue_insight}</p>
       </div>
 
       {/* Top performer */}
-      <div className="flex items-start gap-2 rounded-lg border border-violet-100 bg-violet-50 px-4 py-3">
-        <BarChart2 size={16} className="text-violet-500 mt-0.5 shrink-0" />
+      <div className="flex items-start gap-2 rounded-lg border border-violet-900/50 bg-violet-950/30 px-4 py-3">
+        <BarChart2 size={16} className="text-violet-400 mt-0.5 shrink-0" />
         <div>
-          <span className="text-xs font-semibold text-violet-700 uppercase tracking-wide">Top Performer</span>
-          <p className="text-sm text-gray-800 mt-0.5">{data.top_performer}</p>
+          <span className="text-xs font-semibold text-violet-400 uppercase tracking-wide">Top Performer</span>
+          <p className="text-sm text-zinc-200 mt-0.5">{data.top_performer}</p>
         </div>
       </div>
 
@@ -228,12 +228,12 @@ function SalesResult({ data }: { data: SalesSummary }) {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {data.key_insights.length > 0 && (
           <div>
-            <h4 className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">
+            <h4 className="text-xs font-semibold uppercase tracking-wide text-zinc-500 mb-2">
               Key Insights
             </h4>
             <ul className="space-y-1.5">
               {data.key_insights.map((insight, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-gray-700">
+                <li key={i} className="flex items-start gap-2 text-sm text-zinc-300">
                   <span className="mt-1 w-1.5 h-1.5 rounded-full bg-violet-400 shrink-0" />
                   {insight}
                 </li>
@@ -243,12 +243,12 @@ function SalesResult({ data }: { data: SalesSummary }) {
         )}
         {data.recommendations.length > 0 && (
           <div>
-            <h4 className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">
+            <h4 className="text-xs font-semibold uppercase tracking-wide text-zinc-500 mb-2">
               Recommendations
             </h4>
             <ul className="space-y-1.5">
               {data.recommendations.map((rec, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-gray-700">
+                <li key={i} className="flex items-start gap-2 text-sm text-zinc-300">
                   <ArrowRight size={14} className="text-violet-400 mt-0.5 shrink-0" />
                   {rec}
                 </li>
@@ -268,15 +268,15 @@ export default function AI() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">AI Insights</h1>
-        <p className="text-sm text-gray-500 mt-1">
+        <h1 className="text-2xl font-semibold tracking-tight text-zinc-100">AI Insights</h1>
+        <p className="text-sm text-zinc-400 mt-1">
           On-demand analysis powered by OpenRouter. Results are generated fresh each time.
         </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Inventory Analysis */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+        <div className="bg-zinc-900 rounded-xl border border-zinc-800 shadow-sm p-6">
           <SectionHeader
             icon={PackageSearch}
             title="Inventory Analysis"
@@ -294,7 +294,7 @@ export default function AI() {
         </div>
 
         {/* Sales Summary */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+        <div className="bg-zinc-900 rounded-xl border border-zinc-800 shadow-sm p-6">
           <SectionHeader
             icon={TrendingUp}
             title="Sales Summary"

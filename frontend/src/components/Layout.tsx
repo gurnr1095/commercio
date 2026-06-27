@@ -38,18 +38,18 @@ export default function Layout() {
   }
 
   return (
-    <div className="flex h-screen overflow-hidden bg-gray-50 text-gray-900">
+    <div className="flex h-screen overflow-hidden bg-zinc-950 text-zinc-100">
       {/* Sidebar */}
       <aside
         className={cn(
-          "shrink-0 border-r border-gray-200 bg-white flex flex-col h-full transition-all duration-200 overflow-hidden",
+          "shrink-0 border-r border-zinc-800 bg-zinc-900 flex flex-col h-full transition-all duration-200 overflow-hidden",
           collapsed ? "w-[60px]" : "w-56"
         )}
       >
         {/* Logo */}
         <div
           className={cn(
-            "flex items-center py-5 border-b border-gray-100 shrink-0",
+            "flex items-center py-5 border-b border-zinc-800 shrink-0",
             collapsed ? "justify-center" : "px-5"
           )}
         >
@@ -58,7 +58,7 @@ export default function Layout() {
               C
             </span>
           ) : (
-            <span className="text-lg font-semibold tracking-tight">Commercio</span>
+            <span className="text-lg font-semibold tracking-tight text-zinc-100">Commercio</span>
           )}
         </div>
 
@@ -77,14 +77,14 @@ export default function Layout() {
                     ? cn(
                         "justify-center p-2.5",
                         isActive
-                          ? "bg-violet-100 text-violet-700"
-                          : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
+                          ? "bg-violet-950/50 text-violet-300"
+                          : "text-zinc-400 hover:bg-zinc-800 hover:text-zinc-100"
                       )
                     : cn(
                         "gap-3 py-2",
                         isActive
-                          ? "pl-2.5 pr-3 border-l-2 border-violet-600 bg-violet-50 text-violet-700"
-                          : "px-3 text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                          ? "pl-2.5 pr-3 border-l-2 border-violet-500 bg-violet-950/50 text-violet-300"
+                          : "px-3 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-100"
                       )
                 )
               }
@@ -96,7 +96,7 @@ export default function Layout() {
         </nav>
 
         {/* Bottom section */}
-        <div className="shrink-0 border-t border-gray-100 px-2 py-3 flex flex-col gap-0.5">
+        <div className="shrink-0 border-t border-zinc-800 px-2 py-3 flex flex-col gap-0.5">
           <NavLink
             to="/settings"
             title={collapsed ? "Settings" : undefined}
@@ -107,14 +107,14 @@ export default function Layout() {
                   ? cn(
                       "justify-center p-2.5",
                       isActive
-                        ? "bg-violet-100 text-violet-700"
-                        : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
+                        ? "bg-violet-950/50 text-violet-300"
+                        : "text-zinc-400 hover:bg-zinc-800 hover:text-zinc-100"
                     )
                   : cn(
                       "gap-3 py-2",
                       isActive
-                        ? "pl-2.5 pr-3 border-l-2 border-violet-600 bg-violet-50 text-violet-700"
-                        : "px-3 text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                        ? "pl-2.5 pr-3 border-l-2 border-violet-500 bg-violet-950/50 text-violet-300"
+                        : "px-3 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-100"
                     )
               )
             }
@@ -127,7 +127,7 @@ export default function Layout() {
             onClick={toggleCollapse}
             title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
             className={cn(
-              "flex items-center rounded-md text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-colors",
+              "flex items-center rounded-md text-sm text-zinc-400 hover:bg-zinc-800 hover:text-zinc-100 transition-colors",
               collapsed ? "justify-center p-2.5" : "gap-3 px-3 py-2"
             )}
           >
@@ -147,7 +147,7 @@ export default function Layout() {
       </aside>
 
       {/* Main content */}
-      <main className="flex-1 overflow-y-auto p-8">
+      <main className="flex-1 overflow-y-auto p-8 bg-zinc-950">
         <Outlet />
       </main>
     </div>

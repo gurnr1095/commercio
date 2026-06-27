@@ -12,11 +12,11 @@ const CATEGORY_COLOR: Record<string, string> = {
 };
 
 const CATEGORY_BADGE: Record<string, string> = {
-  Electronics: "bg-blue-100 text-blue-700",
-  Clothing: "bg-rose-100 text-rose-700",
-  "Home & Kitchen": "bg-amber-100 text-amber-800",
-  Books: "bg-teal-100 text-teal-700",
-  Sports: "bg-orange-100 text-orange-700",
+  Electronics: "bg-blue-950/60 text-blue-400",
+  Clothing: "bg-rose-950/60 text-rose-400",
+  "Home & Kitchen": "bg-amber-950/60 text-amber-400",
+  Books: "bg-teal-950/60 text-teal-400",
+  Sports: "bg-orange-950/60 text-orange-400",
 };
 
 function stockBadge(qty: number, threshold: number) {
@@ -34,16 +34,16 @@ type Props = {
 export default function ProductCard({ product, onEdit, onDelete }: Props) {
   const [imgFailed, setImgFailed] = useState(false);
   const stock = stockBadge(product.stock_quantity, product.reorder_threshold);
-  const barColor = product.category ? (CATEGORY_COLOR[product.category] ?? "#9ca3af") : "#9ca3af";
+  const barColor = product.category ? (CATEGORY_COLOR[product.category] ?? "#71717a") : "#71717a";
   const badgeClass = product.category
-    ? (CATEGORY_BADGE[product.category] ?? "bg-gray-100 text-gray-700")
-    : "bg-gray-100 text-gray-700";
+    ? (CATEGORY_BADGE[product.category] ?? "bg-zinc-800 text-zinc-400")
+    : "bg-zinc-800 text-zinc-400";
   const showImage = Boolean(product.image_url) && !imgFailed;
 
   return (
-    <div className="flex flex-col rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+    <div className="flex flex-col rounded-xl border border-zinc-800 bg-zinc-900 shadow-sm overflow-hidden hover:shadow-lg hover:border-zinc-700 transition-all">
       {showImage ? (
-        <div className="h-36 w-full shrink-0 overflow-hidden bg-gray-100">
+        <div className="h-36 w-full shrink-0 overflow-hidden bg-zinc-800">
           <img
             src={product.image_url!}
             alt={product.name}
@@ -72,16 +72,16 @@ export default function ProductCard({ product, onEdit, onDelete }: Props) {
 
         {/* Name + SKU */}
         <div>
-          <h3 className="font-semibold text-gray-900 leading-snug line-clamp-2">{product.name}</h3>
-          <p className="text-xs text-gray-400 mt-0.5 font-mono">{product.sku}</p>
+          <h3 className="font-semibold text-zinc-100 leading-snug line-clamp-2">{product.name}</h3>
+          <p className="text-xs text-zinc-500 mt-0.5 font-mono">{product.sku}</p>
         </div>
 
         {/* Pricing */}
         <div className="flex items-baseline gap-3">
-          <span className="text-lg font-bold text-gray-900">
+          <span className="text-lg font-bold text-zinc-100">
             ${Number(product.price).toFixed(2)}
           </span>
-          <span className="text-xs text-gray-400">
+          <span className="text-xs text-zinc-500">
             Cost ${Number(product.cost).toFixed(2)}
           </span>
         </div>
@@ -89,8 +89,8 @@ export default function ProductCard({ product, onEdit, onDelete }: Props) {
         {/* Margin */}
         {product.cost > 0 && (
           <div className="text-xs">
-            <span className="text-gray-400">Margin </span>
-            <span className="font-medium text-gray-700">
+            <span className="text-zinc-500">Margin </span>
+            <span className="font-medium text-zinc-300">
               ${(product.price - product.cost).toFixed(2)}{" "}
               ({Math.round(((product.price - product.cost) / product.price) * 100)}%)
             </span>
@@ -100,31 +100,31 @@ export default function ProductCard({ product, onEdit, onDelete }: Props) {
         {/* Stock */}
         <div className="flex gap-4 text-sm mt-auto">
           <div>
-            <p className="text-xs text-gray-400">Stock</p>
-            <p className="font-semibold text-gray-900">{product.stock_quantity}</p>
+            <p className="text-xs text-zinc-500">Stock</p>
+            <p className="font-semibold text-zinc-100">{product.stock_quantity}</p>
           </div>
           <div>
-            <p className="text-xs text-gray-400">Reorder at</p>
-            <p className="font-semibold text-gray-900">{product.reorder_threshold}</p>
+            <p className="text-xs text-zinc-500">Reorder at</p>
+            <p className="font-semibold text-zinc-100">{product.reorder_threshold}</p>
           </div>
         </div>
       </div>
 
       {/* Action row */}
-      <div className="flex border-t border-gray-100 shrink-0">
+      <div className="flex border-t border-zinc-800 shrink-0">
         <button
           onClick={() => onEdit(product)}
           aria-label={`Edit ${product.name}`}
-          className="flex-1 flex items-center justify-center gap-1.5 py-2.5 text-sm text-gray-600 hover:bg-gray-50 transition-colors"
+          className="flex-1 flex items-center justify-center gap-1.5 py-2.5 text-sm text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200 transition-colors"
         >
           <Pencil size={13} />
           Edit
         </button>
-        <div className="w-px bg-gray-100" />
+        <div className="w-px bg-zinc-800" />
         <button
           onClick={() => onDelete(product)}
           aria-label={`Delete ${product.name}`}
-          className="flex-1 flex items-center justify-center gap-1.5 py-2.5 text-sm text-red-500 hover:bg-red-50 transition-colors"
+          className="flex-1 flex items-center justify-center gap-1.5 py-2.5 text-sm text-red-500 hover:bg-red-950/50 hover:text-red-400 transition-colors"
         >
           <Trash2 size={13} />
           Delete

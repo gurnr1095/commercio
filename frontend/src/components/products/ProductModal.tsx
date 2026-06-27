@@ -160,7 +160,7 @@ export default function ProductModal({ open, onClose, product }: Props) {
                 id="p-cat"
                 value={form.category}
                 onChange={(e) => setForm((prev) => ({ ...prev, category: e.target.value }))}
-                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-violet-600 focus:border-transparent"
+                className="w-full rounded-md border border-zinc-700 px-3 py-2 text-sm bg-zinc-800 text-zinc-100 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
               >
                 <option value="">Select category…</option>
                 <option value="Electronics">Electronics</option>
@@ -205,7 +205,7 @@ export default function ProductModal({ open, onClose, product }: Props) {
 
             {/* Error */}
             {error && (
-              <p role="alert" className="col-span-2 text-sm text-red-600 bg-red-50 rounded-md px-3 py-2">
+              <p role="alert" className="col-span-2 text-sm text-red-400 bg-red-950/50 border border-red-900/50 rounded-md px-3 py-2">
                 {error}
               </p>
             )}

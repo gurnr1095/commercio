@@ -41,9 +41,9 @@ export default function Products() {
       {/* Header */}
       <div className="flex items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Products</h1>
+          <h1 className="text-2xl font-semibold tracking-tight text-zinc-100">Products</h1>
           {products && (
-            <p className="text-sm text-gray-500 mt-0.5">{products.length} products total</p>
+            <p className="text-sm text-zinc-400 mt-0.5">{products.length} products total</p>
           )}
         </div>
         <Button onClick={openCreate}>
@@ -54,7 +54,7 @@ export default function Products() {
 
       {/* Search */}
       <div className="relative max-w-sm">
-        <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+        <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" />
         <Input
           value={search}
           onChange={(e) => {
@@ -71,26 +71,26 @@ export default function Products() {
       {isLoading && (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
           {Array.from({ length: 10 }).map((_, i) => (
-            <div key={i} className="h-56 rounded-xl border border-gray-200 bg-gray-100 animate-pulse" />
+            <div key={i} className="h-56 rounded-xl border border-zinc-800 bg-zinc-800 animate-pulse" />
           ))}
         </div>
       )}
 
       {isError && (
-        <div className="rounded-lg border border-red-200 bg-red-50 p-6 text-sm text-red-600">
+        <div className="rounded-lg border border-red-900/50 bg-red-950/50 p-6 text-sm text-red-400">
           Failed to load products. Make sure the backend is running.
         </div>
       )}
 
       {!isLoading && !isError && filtered.length === 0 && (
-        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-gray-300 bg-white py-16 text-center">
-          <Package size={40} className="text-gray-300 mb-3" />
+        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-700 bg-zinc-900 py-16 text-center">
+          <Package size={40} className="text-zinc-600 mb-3" />
           {search ? (
-            <p className="text-sm text-gray-500">No products match "{search}".</p>
+            <p className="text-sm text-zinc-400">No products match "{search}".</p>
           ) : (
             <>
-              <p className="text-sm font-medium text-gray-700">No products yet</p>
-              <p className="text-sm text-gray-400 mt-1">Add your first product to get started.</p>
+              <p className="text-sm font-medium text-zinc-300">No products yet</p>
+              <p className="text-sm text-zinc-500 mt-1">Add your first product to get started.</p>
               <Button className="mt-4" onClick={openCreate}>
                 <Plus size={16} /> Add Product
               </Button>

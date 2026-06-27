@@ -42,13 +42,13 @@ export default function DeleteConfirmDialog({ customer, onClose }: Props) {
           <DialogTitle className="text-base font-semibold">Delete Customer</DialogTitle>
         </DialogHeader>
         <DialogBody>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-zinc-400">
             Are you sure you want to delete{" "}
-            <span className="font-medium text-gray-900">{customer?.name}</span>? This cannot be
+            <span className="font-medium text-zinc-100">{customer?.name}</span>? This cannot be
             undone.
           </p>
           {error && (
-            <p className="mt-3 text-sm text-red-600 bg-red-50 rounded-md px-3 py-2">{error}</p>
+            <p className="mt-3 text-sm text-red-400 bg-red-950/50 border border-red-900/50 rounded-md px-3 py-2">{error}</p>
           )}
         </DialogBody>
         <DialogFooter>

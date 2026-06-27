@@ -7,7 +7,7 @@ function Label({
 }: React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>) {
   return (
     <LabelPrimitive.Root
-      className={cn("text-sm font-medium text-gray-700", className)}
+      className={cn("text-sm font-medium text-zinc-300", className)}
       {...props}
     />
   );

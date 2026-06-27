@@ -27,10 +27,10 @@ class ErrorBoundary extends React.Component<
   render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="min-h-screen flex items-center justify-center bg-zinc-950">
           <div className="text-center max-w-md px-4">
-            <h1 className="text-xl font-semibold text-gray-900">Something went wrong</h1>
-            <p className="mt-2 text-sm text-gray-500 font-mono break-all">{this.state.error?.message}</p>
+            <h1 className="text-xl font-semibold text-zinc-100">Something went wrong</h1>
+            <p className="mt-2 text-sm text-zinc-400 font-mono break-all">{this.state.error?.message}</p>
             <button
               onClick={() => this.setState({ hasError: false, error: null })}
               className="mt-4 text-sm text-violet-600 hover:text-violet-700 underline"
