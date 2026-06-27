@@ -1,4 +1,4 @@
-"""AI / LLM routes — inventory analysis and sales summarization via OpenRouter."""
+"""AI / LLM routes — inventory analysis and sales summarization via Mistral."""
 
 import json
 from datetime import datetime, timedelta, timezone
@@ -19,7 +19,7 @@ from app.schemas.ai import InventoryAnalysis, SalesSummary
 
 router = APIRouter(prefix="/ai", tags=["ai"])
 
-OPENROUTER_BASE = "https://openrouter.ai/api/v1"
+MISTRAL_BASE = "https://api.mistral.ai/v1"
 
 _INVENTORY_SYSTEM = """You are a business intelligence assistant for a merchant dashboard.
 You will receive a JSON snapshot of the merchant's current product inventory.
@@ -54,16 +54,12 @@ key_insights: exactly 3-5 data-driven observations.
 recommendations: exactly 2-3 specific actionable suggestions."""
 
 
-def _call_openrouter(messages: list[dict], model: str) -> str:
+def _call_mistral(messages: list[dict]) -> str:
     resp = httpx.post(
-        f"{OPENROUTER_BASE}/chat/completions",
-        headers={
-            "Authorization": f"Bearer {settings.openrouter_api_key}",
-            "HTTP-Referer": "https://commercio.app",
-            "X-Title": "Commercio",
-        },
+        f"{MISTRAL_BASE}/chat/completions",
+        headers={"Authorization": f"Bearer {settings.mistral_api_key}"},
         json={
-            "model": model,
+            "model": settings.mistral_model,
             "messages": messages,
             "response_format": {"type": "json_object"},
         },
@@ -75,43 +71,35 @@ def _call_openrouter(messages: list[dict], model: str) -> str:
 
 
 def _llm_structured(system: str, user: str, schema_class: type) -> object:
-    models = settings.openrouter_models_list
-    if not settings.openrouter_api_key:
-        raise HTTPException(503, detail="OPENROUTER_API_KEY is not configured in .env")
-    if not models:
-        raise HTTPException(503, detail="OPENROUTER_MODELS is not configured in .env")
+    if not settings.mistral_api_key:
+        raise HTTPException(503, detail="MISTRAL_API_KEY is not configured")
 
     base_messages = [
         {"role": "system", "content": system},
         {"role": "user", "content": user},
     ]
-    last_err = "Unknown error"
 
-    for model in models:
+    try:
+        raw = _call_mistral(base_messages)
         try:
-            raw = _call_openrouter(base_messages, model)
-            try:
-                return schema_class.model_validate_json(raw)
-            except (ValidationError, json.JSONDecodeError, ValueError) as parse_err:
-                repair_messages = base_messages + [
-                    {"role": "assistant", "content": raw},
-                    {
-                        "role": "user",
-                        "content": (
-                            f"Your response failed schema validation: {parse_err}\n"
-                            "Return ONLY the corrected JSON object with no extra text or markdown."
-                        ),
-                    },
-                ]
-                fixed = _call_openrouter(repair_messages, model)
-                return schema_class.model_validate_json(fixed)
-        except HTTPException:
-            raise
-        except Exception as exc:
-            last_err = str(exc)
-            continue
-
-    raise HTTPException(502, detail=f"All LLM models failed. Last error: {last_err}")
+            return schema_class.model_validate_json(raw)
+        except (ValidationError, json.JSONDecodeError, ValueError) as parse_err:
+            repair_messages = base_messages + [
+                {"role": "assistant", "content": raw},
+                {
+                    "role": "user",
+                    "content": (
+                        f"Your response failed schema validation: {parse_err}\n"
+                        "Return ONLY the corrected JSON object with no extra text or markdown."
+                    ),
+                },
+            ]
+            fixed = _call_mistral(repair_messages)
+            return schema_class.model_validate_json(fixed)
+    except HTTPException:
+        raise
+    except Exception as exc:
+        raise HTTPException(502, detail=f"LLM request failed: {exc}")
 
 
 @router.post("/inventory-analysis", response_model=InventoryAnalysis)
