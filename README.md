@@ -2,7 +2,7 @@
 
 A **merchant operating system** — a unified back-office dashboard for products, inventory, customers, orders, and analytics, with LLM-powered inventory analysis and sales summarization.
 
-**[Live Demo →](https://commercio-7tc55cin1-gurnoor.vercel.app)**
+**[Live Demo →](https://commercio-sage.vercel.app)**
 
 ---
 
